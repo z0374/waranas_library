@@ -1,0 +1,25 @@
+name: Deploy via FTP
+
+on:
+  push:
+    branches:
+      - main  # Ou a branch que você deseja usar para deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install FTP client
+      run: sudo apt-get install -y lftp
+
+    - name: Deploy to FTP server
+      run: |
+        lftp -f "
+          set ftp:ssl-allow no
+          open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASSWORD }} ftp://${{ secrets.FTP_HOST }}
+          mirror -R ./ ${FTP_DIRECTORY} --ignore-time --delete
+        "
