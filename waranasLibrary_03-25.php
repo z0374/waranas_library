@@ -576,23 +576,30 @@ function normalize(string $string) {
     return $string;
 }
 
-/* Uso das funções
-$chave = "minha_chave_32bits"; // A chave deve ter 16, 24 ou 32 caracteres
-$string_base64 = "U29tZSBzZWNyZXQgbWVzc2FnZQ=="; // Exemplo de string Base64
+function filter_image($caminho_arquivo) {
+    // Verifica se o arquivo existe
+    if (!file_exists($caminho_arquivo)) {
+        return false;
+    }
 
-// Criptografar
+    // Obtém a extensão do arquivo
+    $extensao = strtolower(pathinfo($caminho_arquivo, PATHINFO_EXTENSION));
+    $extensoes_validas = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp'];
 
-echo "String criptografada (AES + Base64): $encrypted_base64\n";
+    // Verifica se o arquivo é uma imagem válida usando getimagesize()
+    $info_imagem = getimagesize($caminho_arquivo);
 
-// Descriptografar
-$decrypted_base64 = decrypt_base64_aes($encrypted_base64, $chave);
-echo "String Base64 decriptada: $decrypted_base64\n";
-*/
+    // Verifica se a função getimagesize() retornou um valor válido e se o MIME é aceito
+    if ($info_imagem === false) {
+        return false; // Não é uma imagem válida
+    }
 
+    // Verifica o MIME da imagem
+    $mime_valido = in_array($info_imagem['mime'], ['image/jpeg', 'image/png', 'image/gif', 'image/bmp', 'image/tiff', 'image/webp']);
 
-
-
-
+    // Retorna true se todas as condições forem verdadeiras
+    return in_array($extensao, $extensoes_validas) && $mime_valido;
+}
 
 
 /*  Imagens "SVG"   */
