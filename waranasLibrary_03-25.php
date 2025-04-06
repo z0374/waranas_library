@@ -499,68 +499,85 @@ function cachePage($title, $content, $mode, $update) {
     return;
 }
 
-function getJsonData($url, $key, $authToken, $pageToken) {
-    // Definindo a URL com a chave como parâmetro de consulta
-    $url = $url . '?key=' . urlencode($key);
-    
-    // Criando os cabeçalhos necessários
+function getJsonData($url, $parametro, $authToken, $pageToken) {
+    $paramName = is_numeric($parametro) || is_string($parametro) ? 'd' : 'key';
+    $url = $url . '?' . urlencode($paramName) . '=' . urlencode($parametro);
+
+    // Origin dinâmico
+    $origin = (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'];
+
     $headers = [
-        'Authorization: ' . $authToken,  // Cabeçalho de autorização
-        'Origin: victormacedo.dev.br',  // Cabeçalho de origem, ajustado para o domínio correto
-        'Accept: application/json',  // Espera uma resposta no formato JSON
+        'Authorization: ' . $authToken,
+        'Origin: ' . $origin,
+        'Accept: application/json'
     ];
 
-    // Adicionando o X-Page-Token aos cabeçalhos, se fornecido
     if ($pageToken) {
         $headers[] = 'X-Page-Token: ' . $pageToken;
     }
 
-    // Criando o contexto de requisição com cabeçalhos
-    $options = [
-        'http' => [
-            'method'  => 'GET',  // Método HTTP GET
-            'header'  => implode("\r\n", $headers),  // Cabeçalhos concatenados
-            'timeout' => 15,  // Timeout de 15 segundos
-            'ignore_errors' => true, // Faz com que a resposta seja capturada mesmo em erros (não vai falhar automaticamente)
-        ]
+    $ch = curl_init();
+    curl_setopt_array($ch, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HEADER => true,
+        CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_TIMEOUT => 20
+    ]);
+
+    $response = curl_exec($ch);
+    $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    $headersRaw = substr($response, 0, $headerSize);
+    $body = substr($response, $headerSize);
+
+    curl_close($ch);
+
+    preg_match('/Content-Type:\s*(.*)/i', $headersRaw, $matches);
+    $contentType = isset($matches[1]) ? trim($matches[1]) : '';
+
+    // Verifica se é um arquivo binário conhecido
+    if (preg_match('#^(image|video|audio|application)/#', $contentType)) {
+        $tipo = explode('/', $contentType)[0]; // image, video, etc
+        $ext = explode('/', $contentType)[1] ?? 'bin';
+
+        $pasta = __DIR__ . "/assets/{$tipo}s";
+        if (!file_exists($pasta)) {
+            mkdir($pasta, 0777, true);
+        }
+
+        $fileName = $tipo . '_' . time() . '.' . $ext;
+        $filePath = $pasta . '/' . $fileName;
+
+        file_put_contents($filePath, $body);
+
+        return [
+            'success' => true,
+            'tipo' => $tipo,
+            'nome' => $fileName,
+            'caminho' => $filePath
+        ];
+    }
+
+    // Tenta interpretar como JSON
+    $json = json_decode($body, true);
+    if (json_last_error() === JSON_ERROR_NONE) {
+        return [
+            'success' => true,
+            'tipo' => 'json',
+            'dados' => $json
+        ];
+    }
+
+    return [
+        'success' => false,
+        'error' => 'Resposta inesperada do servidor.',
+        'body' => $body,
+        'content_type' => $contentType
     ];
-
-    // Criando o contexto
-    $context = stream_context_create($options);
-
-    // Tentando realizar a requisição e capturar a resposta
-    $response = file_get_contents($url, false, $context);
-
-    // Verificando se a requisição falhou
-    if ($response === false) {
-        // Pegando informações de erro
-        $error = error_get_last();
-        echo "Erro ao fazer requisição: " . $error['message'];
-        return null;
-    }
-
-    // Obtendo o código de status HTTP da resposta
-    $status_code = $http_response_header[0];
-
-    // Exibindo o código de status HTTP (caso seja diferente de sucesso)
-    if (strpos($status_code, '200') === false) {
-        $error = error_get_last();
-        echo "Erro na requisição: " . $p['message'];
-        return null;
-    }
-
-    // Se a resposta não for falsa, tentamos decodificar o JSON
-    $data = json_decode($response, true);
-
-    // Verificando se ocorreu erro ao converter o JSON
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        echo 'Erro ao decodificar JSON: ' . json_last_error_msg();
-        return null;
-    }
-
-    // Retorna os dados decodificados
-    return $data;
 }
+
 
 
 
