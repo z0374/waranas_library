@@ -508,7 +508,7 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
         ];
     }
 
-    // Separa os elementos do array: $tabela e $idOuTipo
+    // Separa os elementos do array: $tabela e $idOuTipo 
     list($tabela, $idOuTipo) = $parametro;
 
     // Define o nome da chave de acordo com o tipo de dado:
