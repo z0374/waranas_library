@@ -422,7 +422,7 @@ function grid($id,$grids,$title){
 }
 function formwhats($id,$phone,$bg){
     global $script,$style,$fscript;
-$names = array_column($array, 'name');
+$names = array_column($fscript, 'name');
 if (!in_array("sendwhats", $names)){$script[]=$fscript[3]['code'];}
 
     $form = "<form id={$id} onsubmit='sendwhats(`{$id}Nm`,`{$id}Mm`,{$phone})'>
