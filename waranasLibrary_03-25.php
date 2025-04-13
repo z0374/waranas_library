@@ -534,7 +534,7 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
         'Accept: application/json'      // Especifica que a resposta esperada é JSON
     ];
 
-    // Se houver um token de paginação, adiciona ao cabeçalho
+    // Se houver um token de paginação, adiciona ao cabeçalho.
     if ($pageToken) {
         $headers[] = 'X-Page-Token: ' . $pageToken;
     }
