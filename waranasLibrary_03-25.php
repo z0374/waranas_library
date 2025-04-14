@@ -500,127 +500,79 @@ function cachePage($title, $content, $mode, $update) {
 }
 
 function getJsonData($url, $parametro, $authToken, $pageToken = null) {
-    // Verifica se o parâmetro é um array com exatamente 2 elementos: [tabela, id ou tipo]
     if (!is_array($parametro) || count($parametro) !== 2) {
-        return [
-            'success' => false,
-            'error' => 'Parâmetro inválido. Esperado array com [tabela, id|tipo].'
-        ];
+        return null;
     }
 
-    // Separa os elementos do array: $tabela e $idOuTipo 
     list($tabela, $idOuTipo) = $parametro;
-
-    // Define o nome da chave de acordo com o tipo de dado:
-    // Se for número, usa "id", se for string, usa "tipo"
     $identKey = is_numeric($idOuTipo) ? 'id' : 'tipo';
 
-    // Constrói a query string: tbl=tabela&id=123 ou tbl=tabela&tipo=imagem
     $query = http_build_query([
         'tbl' => $tabela,
         $identKey => $idOuTipo
     ]);
 
-    // Anexa a query string à URL base
     $url = $url . '?' . $query;
 
-    // Detecta a origem da requisição com base no protocolo (HTTP ou HTTPS)
     $origin = (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'];
 
-    // Prepara os cabeçalhos HTTP para a requisição
     $headers = [
-        'Authorization: ' . $authToken, // Token de autenticação
-        'Origin: ' . $origin,           // Cabeçalho Origin para CORS
-        'Accept: application/json'      // Especifica que a resposta esperada é JSON
+        'Authorization: ' . $authToken,
+        'Origin: ' . $origin,
+        'Accept: application/json'
     ];
 
-    // Se houver um token de paginação, adiciona ao cabeçalho.
     if ($pageToken) {
         $headers[] = 'X-Page-Token: ' . $pageToken;
     }
 
-    // Inicializa o cURL para fazer a requisição HTTP
     $ch = curl_init();
 
-    // Define as opções do cURL
     curl_setopt_array($ch, [
-        CURLOPT_URL => $url,                // URL da requisição
-        CURLOPT_RETURNTRANSFER => true,    // Retorna o conteúdo da resposta como string
-        CURLOPT_HEADER => true,            // Inclui cabeçalhos na resposta
-        CURLOPT_HTTPHEADER => $headers,    // Cabeçalhos definidos acima
-        CURLOPT_TIMEOUT => 20              // Timeout da requisição em segundos
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HEADER => true,
+        CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_TIMEOUT => 20
     ]);
 
-    // Executa a requisição e guarda a resposta (com cabeçalhos)
     $response = curl_exec($ch);
-
-    // Obtém o tamanho da parte do cabeçalho na resposta
     $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-
-    // Captura o código HTTP da resposta (ex: 200, 404, 500)
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-    // Separa os cabeçalhos e o corpo da resposta
     $headersRaw = substr($response, 0, $headerSize);
     $body = substr($response, $headerSize);
-
-    // Fecha a sessão cURL
     curl_close($ch);
 
-    // Tenta encontrar o cabeçalho Content-Type
     preg_match('/Content-Type:\s*(.*)/i', $headersRaw, $matches);
     $contentType = isset($matches[1]) ? trim($matches[1]) : '';
 
-    // Se a resposta for um arquivo binário (imagem, vídeo, áudio ou aplicação)
+    // Se for binário (imagem, vídeo, áudio, aplicação)
     if (preg_match('#^(image|video|audio|application)/#', $contentType)) {
-        // Separa o tipo (image, video, etc.) e extensão do arquivo
         $tipo = explode('/', $contentType)[0];
         $ext = explode('/', $contentType)[1] ?? 'bin';
+        $pasta = $_SERVER['DOCUMENT_ROOT']."/assets/{$tipo}s";
 
-        // Define o caminho do diretório onde salvar o arquivo
-        $pasta = __DIR__ . "/assets/{$tipo}s";
-
-        // Cria o diretório, se ainda não existir
         if (!file_exists($pasta)) {
             mkdir($pasta, 0777, true);
         }
 
-        // Define nome e caminho do arquivo a ser salvo
         $fileName = $tipo . '_' . time() . '.' . $ext;
-        $filePath = $pasta . '/' . $fileName;
+        $filePath = $pasta."/{$fileName}";
 
-        // Salva o conteúdo binário no arquivo
         file_put_contents($filePath, $body);
 
-        // Retorna informações do arquivo salvo
-        return [
-            'success' => true,
-            'tipo' => $tipo,
-            'nome' => $fileName,
-            'caminho' => $filePath
-        ];
+        return 'https://'.$_SERVER['HTTP_HOST']."/{$tipo}s/{$fileName}";
     }
 
-    // Se não for arquivo binário, tenta interpretar como JSON
+    // Se for JSON, retorna array decodificado
     $json = json_decode($body, true);
-
-    // Se JSON válido, retorna os dados
     if (json_last_error() === JSON_ERROR_NONE) {
-        return [
-            'success' => true,
-            'tipo' => 'json',
-            'dados' => $json
-        ];
+        return $json;
     }
 
-    // Se não for nem JSON nem binário conhecido, retorna erro
-    return [
-        'success' => false,
-        'error' => 'Resposta inesperada do servidor.',
-        'body' => $body,
-        'content_type' => $contentType
-    ];
+    // 🟨 Se não for binário nem JSON, retorna como string pura
+    return $body;
 }
+
 
 
 
