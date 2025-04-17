@@ -187,6 +187,7 @@ function modal($id,$array,$color){
                   .mdl:target{visibility:visible;opacity:1;}
                   .mdl{width:100vw;height:100vh;visibility:hidden;opacity:0;align-items:center;display:flex;background-color:#0000009b;position:fixed;top:0;transition:.3s;}
                   .cmdl{width:24%;height:69%;border-radius:1.5vw; background-color:white; display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;}#{$id} .cmdl{border-top: solid 6vh {$color};}
+                  .cmdl #closeX{position:absolute;rigth:1;top:1;}
                   .mbt{padding:0.6vw 5.1vw;border-radius:0.3vw;}#i{font-size:0.6rem;}#itm{padding:1.2vh 0.9vw;display:flex;justify-content:space-between}
                   .content{width:81%;height:60%;overflow:auto;font-size:1.2rem ;}
                   #{$id}{$bt}{background-color:#EAC7EB;padding:3% 15%;border-radius:0.9vh;background-color:{$color};}
@@ -202,7 +203,7 @@ function modal($id,$array,$color){
 
       $imdl .= "<div class='content'>{$linha}</div>";
             $imdl .= "<a class='mbt' href='#' id='{$id}{$bt}'>{$array[($length-1)]['content']}</a>";
-            $mdl[]= "<div class='cmdl'>{$imdl}</div>";            
+            $mdl[]= "<div class='cmdl'><a id='closeX' href='?'>X</a>{$imdl}</div>";            
             return "<div id='{$id}' class='mdl'>".implode('', $mdl)."</div>";  
 
 }
