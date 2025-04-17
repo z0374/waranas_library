@@ -188,7 +188,7 @@ function modal($id,$array,$color){
                     location.hash = '#';
                     }
                 });
-            "
+            ";
 
       $length = count($array);
       $bt = $length-1;
