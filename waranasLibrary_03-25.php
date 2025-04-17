@@ -189,8 +189,8 @@ function modal($id,$array,$color){
                     }
                 });
             ";
-
-      $length = count($array);
+    if(is_array($array)){
+      $length = count($array);}else{$length = 2;}
       $bt = $length-1;
       $style[]= "
                   .mdl:target{visibility:visible;opacity:1;}
