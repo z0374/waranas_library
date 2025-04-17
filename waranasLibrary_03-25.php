@@ -205,11 +205,12 @@ function modal($id,$array,$color){
             @media(max-width:920px){
                   .cmdl{width:90%;height:69%;
                         }";
+    if(is_array($array)){
       for($v=0;$v<$length-1;$v++){
             $item = "<a id='{$id}{$v}' href={$array[$v]['href']}>{$array[$v]['content']}</a>";
                   if(array_key_exists('lnk', $array[$v])){$item .= "<a id='{$id}i{$v}' href='{$array[$v]['lnk']}' target='blank'><i id='i'class='fa-solid fa-arrow-up-right-from-square' aria-hidden='true'></i></a>";  }
             $linha .= "<span id='itm'>{$item}</span>";  }
-
+}else{$linha = $array;}
       $imdl .= "<div class='content'>{$linha}</div>";
             $imdl .= "<a class='mbt' href='#' id='{$id}{$bt}'>{$array[($length-1)]['content']}</a>";
             $mdl[]= "<div class='cmdl'><a id='closeX' href='#'>X</a>{$imdl}</div>";            
