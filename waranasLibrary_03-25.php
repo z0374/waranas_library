@@ -181,6 +181,15 @@ function modal($id,$array,$color){
       $mdl=[];$imdl='';$item='';$linha='';
       global$style,$mobile;
 
+            $script[]="
+                    const minhaDiv = document.querySelector('#".$id." .cmdl');
+                    document.addEventListener('click', function(event) {
+                    if (!minhaDiv.contains(event.target)) {
+                    location.hash = '#';
+                    }
+                });
+            "
+
       $length = count($array);
       $bt = $length-1;
       $style[]= "
