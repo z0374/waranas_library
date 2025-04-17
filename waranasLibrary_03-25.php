@@ -203,7 +203,7 @@ function modal($id,$array,$color){
 
       $imdl .= "<div class='content'>{$linha}</div>";
             $imdl .= "<a class='mbt' href='#' id='{$id}{$bt}'>{$array[($length-1)]['content']}</a>";
-            $mdl[]= "<div class='cmdl'><a id='closeX' href='?'>X</a>{$imdl}</div>";            
+            $mdl[]= "<div class='cmdl'><a id='closeX' href='#'>X</a>{$imdl}</div>";            
             return "<div id='{$id}' class='mdl'>".implode('', $mdl)."</div>";  
 
 }
