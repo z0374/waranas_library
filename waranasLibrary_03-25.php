@@ -212,8 +212,8 @@ function modal($id,$array,$color){
             $linha .= "<span id='itm'>{$item}</span>";  }
 }else{$linha = $array;}
       $imdl .= "<div class='content'>{$linha}</div>";
-            $imdl .= "<a class='mbt' href='#' id='{$id}{$bt}'>{$array[($length-1)]['content']}</a>";
-            $mdl[]= "<div class='cmdl'><a id='closeX' href='#'>X</a>{$imdl}</div>";            
+      if(is_array($array)){ $imdl .= "<a class='mbt' href='#' id='{$id}{$bt}'>{$array[($length-1)]['content']}</a>";}
+        else{$mdl .= "<div class='cmdl'><a id='closeX' href='#'>X</a>{$imdl}</div>";}
             return "<div id='{$id}' class='mdl'>".implode('', $mdl)."</div>";  
 
 }
