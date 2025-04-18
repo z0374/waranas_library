@@ -103,7 +103,7 @@ $style=[//estilo da página.
 function html($tempo){
     global $lang,$head,$fonts,$style,$styleLink,$body,$header,$main,$footer,$script,$fscript,$mobile,$title,$favicon; 
 
-        $head=[//configurações da página. 
+        $head[]=[//configurações da página. 
             "<meta charset='utf-8'><title>".implode('',$title)."</title><meta name='viewport' content='width=device-width,initial-scale=1.0'><link rel='icon' href=".implode('', $favicon).">"
         ];
 $html= "<!DOCTYPE html><html lang=".$lang."><head>".implode('', $head)."<style>".implode('', $fonts).implode('', $style)."@media(max-width:900px){".implode('', $mobile)."}</style><link rel='stylesheet' href=".$styleLink[0]."></head><body><header>".implode('', $header)."</header><main>".implode('', $main)."</main><footer>".implode('', $footer)."</footer>".implode('', $body)."<script>".implode('',$script)."</script></body></html>";
