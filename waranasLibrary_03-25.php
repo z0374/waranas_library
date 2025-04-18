@@ -432,25 +432,36 @@ function grid($id,$grids,$title){
         
         return "<section id={$id}><h1>{$title}</h1>".implode($section)."</section>";
 }
-function formwhats($id,$phone,$bg){
-    global $script,$style,$fscript;
+function formwhats($id, $phone, $bg) {
+    global $script, $style, $fscript;
     
-$names = array_column($script, 'name');
-if (!in_array("sendwhats", $names)){$script[]=$fscript[3]['code'];}
+    $names = array_column($script, 'name');
+    if (!in_array("sendwhats", $names)) {
+        $script[] = $fscript[3]['code'];
+    }
 
-    $form = "<form id={$id} onsubmit='sendwhats(`{$id}Nm`,`{$id}Mm`,{$phone})'>
-            <input id={$id}Nm type='text' placeholder='Seu nome'>
-            <textarea id='{$id}Mm' placeholder='Sua mensagem'></textarea>
-            <input id={$id}St value='ENVIAR' type='submit'>
-            </form>";
-    $style[]="
-        form{width:81%;display:flex;flex-flow:column nowrap;gap:0.9rem;}
-        form input,form #{$id}Mm{width:90%;height:3rem;padding:0.9rem;font-size:1.14rem;border-radius:0.3rem;box-shadow:0 0 0.1rem 0.1rem rgba(78,78,78,0.09);}
-        form #{$id}Mm{height:9rem;resize:none;}
-        form #{$id}St{background:{$bg};color:#FFFFFF;font-weight:bold;}
+    // Escapar corretamente os atributos
+    $idEsc = htmlspecialchars($id, ENT_QUOTES);
+    $phoneEsc = htmlspecialchars($phone, ENT_QUOTES);
+    $bgEsc = htmlspecialchars($bg, ENT_QUOTES);
+
+    $form = "<form id=\"{$idEsc}\" onsubmit=\"sendwhats('{$idEsc}Nm','{$idEsc}Mm','{$phoneEsc}'); return false;\">
+        <input id=\"{$idEsc}Nm\" type=\"text\" placeholder=\"Seu nome\">
+        <textarea id=\"{$idEsc}Mm\" placeholder=\"Sua mensagem\"></textarea>
+        <input id=\"{$idEsc}St\" value=\"ENVIAR\" type=\"submit\">
+    </form>";
+
+    $style[] = "
+        form#{$idEsc} {width: 81%;display: flex;flex-flow: column nowrap;gap: 0.9rem;}
+        form#{$idEsc} input,
+        form#{$idEsc} textarea {width: 90%;height: 3rem;padding: 0.9rem;font-size: 1.14rem;border-radius: 0.3rem;box-shadow: 0 0 0.1rem 0.1rem rgba(78,78,78,0.09);}
+        form#{$idEsc} textarea {height: 9rem;resize: none;}
+        form#{$idEsc} input[type=submit] {background: {$bgEsc};color: #FFFFFF;font-weight: bold;}
     ";
+
     return $form;
 }
+
 
 function aesEncrypt($base64, $key) {
     $iv_length = openssl_cipher_iv_length('aes-256-cbc');
