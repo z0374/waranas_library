@@ -98,7 +98,7 @@ $style=[//estilo da página.
             "button:hover,a:hover,.hamburguer summary:hover{opacity:0.6;}a,button{cursor:pointer;}
             footer{width:100%;text-align:center;display:flex;flex-direction:column;}"];
 
-$head=[//configurações da página.
+$head=[//configurações da página. 
       "<meta charset='utf-8'><title>".implode('',$title)."</title><meta name='viewport' content='width=device-width,initial-scale=1.0'><link rel='icon' href=".implode('', $favicon).">"
     ];
 
