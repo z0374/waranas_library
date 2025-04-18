@@ -2,7 +2,7 @@
 header('Content-Type: text/html; charset=utf-8');
 
 //variáveis globais vazias.
-$bgbody=[];/*plano de fundo do body(padrão = branco)*/      $title=[];/* titulo da página(padão ='')*/      $favicon=[''];/*icone da página (padrão = padrão do navegador)*/
+$bgbody=[];/*plano de fundo do body(padrão = branco)*/      $title=[];/* titulo da página(padão ='')*/      $favicon=[];/*icone da página (padrão = padrão do navegador)*/
 
 //arrays de concatenação vazio.
 $script=[
@@ -99,12 +99,12 @@ $style=[//estilo da página.
             footer{width:100%;text-align:center;display:flex;flex-direction:column;}"];
 
 $head=[//configurações da página.
-      "<meta charset='utf-8'><title>".implode('',$title)."</title><meta name='viewport' content='width=device-width,initial-scale=1.0'><link rel='icon' href=".$favicon[0].">"
+      "<meta charset='utf-8'><title>".implode('',$title)."</title><meta name='viewport' content='width=device-width,initial-scale=1.0'><link rel='icon' href=".implode('', $favicon).">"
     ];
 
 //função de inicialização e exibição
 function html($tempo){
-    global $lang,$head,$fonts,$style,$styleLink,$body,$header,$main,$footer,$script,$fscript,$mobile,$title; 
+    global $lang,$head,$fonts,$style,$styleLink,$body,$header,$main,$footer,$script,$fscript,$mobile,$title,$favicon; 
 
 $html= "<!DOCTYPE html><html lang=".$lang."><head>".implode('', $head)."<style>".implode('', $fonts).implode('', $style)."@media(max-width:900px){".implode('', $mobile)."}</style><link rel='stylesheet' href=".$styleLink[0]."></head><body><header>".implode('', $header)."</header><main>".implode('', $main)."</main><footer>".implode('', $footer)."</footer>".implode('', $body)."<script>".implode('',$script)."</script></body></html>";
 
