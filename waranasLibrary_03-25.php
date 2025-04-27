@@ -184,27 +184,21 @@ function sliding($direction,$array,$id,$bg){
 
 function modal($id,$array,$color){
       $mdl=[];$imdl='';$item='';$linha='';
-      global$style,$mobile;
+      global$style,$mobile,$body;
 
-            $script[]="
-                    const minhaDiv = document.querySelector('#".$id." .cmdl');
-                    document.addEventListener('click', function(event) {
-                    if (!minhaDiv.contains(event.target)) {
-                    location.hash = '#';
-                    }
-                });
-            ";
     if(is_array($array)){
       $length = count($array);}else{$length = 2;}
       $bt = $length-1;
       $style[]= "
-                  .mdl:target{visibility:visible;opacity:1;}
+                  #modal-toggle{$id}:checked + #{$id}Mdl{visibility:visible;opacity:1;}
                   .mdl{width:100vw;height:100vh;visibility:hidden;opacity:0;align-items:center;display:flex;background-color:#0000009b;position:fixed;top:0;transition:.3s;}
-                  .cmdl{width:24%;height:69%;border-radius:1.5vw; position:relative; background-color:white; display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;}#{$id} .cmdl{border-top: solid 6vh {$color};}
+                  .cmdl{width:24%;height:69%;z-index:3;border-radius:1.5vw; position:relative; background-color:white; display:flex;flex-direction:column;justify-content:space-evenly;align-items:center;}#{$id} .cmdl{border-top: solid 6vh {$color};}
                   .cmdl .closeX{color:red;position:absolute;right:15px;top:9px;font-weight: 900;}
                   .mbt{padding:0.6vw 5.1vw;border-radius:0.3vw;}#i{font-size:0.6rem;}#itm{padding:1.2vh 0.9vw;display:flex;justify-content:space-between}
                   .content{width:81%;height:60%;overflow:auto;font-size:1.2rem ;}
                   #{$id}{$bt}{background-color:#EAC7EB;padding:3% 15%;border-radius:0.9vh;background-color:{$color};}
+                  .closeModal{width:100%;height:100%;z-index:1;position:absolute;}.closeModal:hover{opacity:0.6;}
+                  .modal-toggle{display:none;}
                         ";
       $mobile[]="
             @media(max-width:920px){
@@ -218,9 +212,10 @@ function modal($id,$array,$color){
 }else{$linha = $array;}
       $imdl .= "<div class='content'>{$linha}</div>";
       if(is_array($array)){ $imdl .= "<a class='mbt' href='/' id='{$id}{$bt}'>{$array[($length-1)]['content']}</a>";}
-        else{$imdl .= "<a class='closeX' href='#'>X</a>";}
-        $mdl[] = "<div class='cmdl'>{$imdl}</div>";
-            return "<div id='{$id}' class='mdl'>".implode('', $mdl)."</div>";  
+        else{$imdl .= "<label class='closeX' for='modal-toggle'>&times;</label>";}
+        $mdl[] = "<label class='closeModal' for='modal-toggle{$id}'></label><div class='cmdl' onclick='event.stopPropagation()'>{$imdl}</div>";
+        $body[]="<input type='checkbox' id='modal-toggle{$id}' class='modal-toggle' /><div id='{$id}Mdl' class='mdl'>".implode('', $mdl)."</div>";
+            return '<label id="'.$id.'" for="modal-toggle'.$id.'" class="open-btn">'.$id.'</label>';
 
 }
 
@@ -232,12 +227,12 @@ if (!in_array("search", $names)){$script[]=$fscript[2]['code'];}
     $script[]= 'const jsonData='.$jsonData.'; const data =JSON.parse(JSON.stringify(jsonData));';
 
       $style[]= "
-                  #search{width: calc({$tm}% + 18%);height:calc({$tm}% + 3%);min-width:44px;min-height:44px;position:relative;display:flex;border:solid 0.06vh black;border-radius: 0.9vh;display: flex;justify-content: space-between;flex-shrink: 1;background-color: white;}
-                  #search input{width: 60%;height:100%;font-size:100%;border-radius: 0.9vh;margin-left:3%;}
+                  #search{width: calc({$tm}% + 18%);height:calc({$tm}% + 3%);min-width:44px;min-height:45px;position:relative;border:solid 0.06vh black;border-radius: 0.9vh;display: flex;justify-content: space-between;flex-shrink: 1;background-color: white;z-index:6;padding:0;margin:0;overflow:hidden;}
+                  #search input{width: 60%;height:100%;font-size:100%;border-radius: 0.9vh;margin-left:3%;z-index:3;}
 
-                  #search button{min-width:44px;width: 30%;min-height:100%;border-radius: 0.9vh;display: flex;align-items: center;font-size:100%;font-weight:bold;cursor: pointer;z-index:20;}
+                  #search button{min-width:44px;width: 30%;min-height:44px;height:100%;border-radius: 0.9vh;display: flex;align-items: center;font-size:100%;font-weight:bold;cursor: pointer;z-index:3;}
 
-                  #search a{min-width:88px;width: 39%;height:100%;position:absolute;right:0;z-index:1;flex-grow:1;} #search a:hover{background:rgba(90,90,90,0.09);} #search svg{width:45%;height:51%;overflow:visible;stroke:#787878;}";
+                  #search a{min-width:44px;width: 39%;height:100%;position:absolute;right:0;z-index:1;flex-grow:1;} #search a:hover{background:rgba(90,90,90,0.09);} #search svg{width:45%;height:51%;overflow:visible;stroke:#787878;}";
     $mobile[]="
             #search{width:60%;min-height:44px;}
             #search input{width:57%;}
@@ -318,17 +313,17 @@ function tabs($array,$bg) {//$array recebe um array associativo com as seguintes
     $length = count($array);
 
     for ($i = 0; $i < $length; $i++) {
-        $tabs[] = "<input class='tabsBt' name='tabs' type='radio' id='tab{$i}' checked><label for='tab{$i}'>{$array[$i]['title']}</label>";
-        $content[]= "<div class='content' id='cnt{$i}'>{$array[$i]['content']}</div>";
+        $tabs[] = "<label for='tab{$i}'>{$array[$i]['title']}</label>";
+        $content[]= "<input class='tabsBt' name='tabs' type='radio' id='tab{$i}' checked><div class='content' id='cnt{$i}'>{$array[$i]['content']}</div>";
         $check[]= "input#tab{$i}:checked ~ #cnt{$i},";}
 
             $style[] = "
-                  .tabs{width:100%;height:fit-content;display:grid;grid-template-columns:repeat({$length}, 1fr);grid-template-rows:auto 2fr;border-radius:0.6vh 0.6vh 0 0;}
-                  .tabs label{width:100%;grid-row:1;padding:0.9vw;font-size:1.5rem;font-weight:bold;background:$bg;text-align:center;cursor:pointer;}
-                  input[type='radio']:checked + label,label:hover{opacity:0.72;}
+                  .tabs{width:100%;min-height:fit-content;display:grid;grid-template-columns:1fr;grid-template-rows:auto 2fr;border-radius:0.6vh 0.6vh 0 0;}
+		  .labelsTab{width:100%;grid-row:1;display:grid;grid-auto-flow:column;grid-auto-columns: 1fr;} .labelsTab label{min-height:100%;padding:0.9vw;font-size:1.5rem;font-weight:bold;background:$bg;text-align:center;cursor:pointer;}
+                  input#tab{$i}:checked ~ .labelsTab label:focus, .labelsTab label:hover{opacity:0.72;}
                   .tabs .tabsBt{display:none;}
-                  .tabs .content{width:100%;height:fit-content;visibility:hidden;padding:2.1vh;grid-column:1/-1;grid-row:2;border-top:solid 0.12vh $bg;cursor:text;border:solid 1px $bg;text-align:justify;overflow:auto;}".
-                  implode('', $check)."p{visibility:visible;height:auto;}
+                  .tabs .content{width:100%;min-height:fit-content;visibility:hidden;display:none;padding:2.1vh;grid-column:1/-1;grid-row:2;border-top:solid 0.12vh $bg;cursor:text;border:solid 1px $bg;text-align:justify;overflow:visible;}".
+                  implode('', $check)." p{visibility:visible;height:auto;display:flex;}
                         ";
             $mobile[]="
             @media(max-width:920px){
@@ -337,7 +332,7 @@ function tabs($array,$bg) {//$array recebe um array associativo com as seguintes
                         ";
 
       
-    return "<div class='tabs'>".implode('', $tabs).implode('', $content). "</div>";
+    return "<div class='tabs'><div class='labelsTab'>".implode('', $tabs).'</div>'.implode('', $content). "</div>";
 }
 function tagList($id,$array,$tm){
       global$style,$mobile;
@@ -377,7 +372,7 @@ function arquivoBd($tbl,$cln,$ref,$con){
         die("Falha na conexão: " . $conn->connect_error);
     }
 
-    // 2. Especificar a consulta SQL para buscar o arquivo (por exemplo, por nome)
+    // 2. Especificar a consulta SQL para buscar o arquivo (por exemplo, por nome) 
     $nome_arquivo = $ref; // O nome do arquivo que você quer buscar
     $sql = "SELECT * FROM {$tbl} WHERE {$cln} = ?";
 
