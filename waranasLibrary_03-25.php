@@ -212,10 +212,10 @@ function modal($id,$array,$color){
 }else{$linha = $array;}
       $imdl .= "<div class='content'>{$linha}</div>";
       if(is_array($array)){ $imdl .= "<a class='mbt' href='/' id='{$id}{$bt}'>{$array[($length-1)]['content']}</a>";}
-        else{$imdl .= "<label class='closeX' for='modal-toggle'>&times;</label>";}
+        else{$imdl .= "<label class='closeX' for='modal-toggle{$id}'>&times;</label>";}
         $mdl[] = "<label class='closeModal' for='modal-toggle{$id}'></label><div class='cmdl' onclick='event.stopPropagation()'>{$imdl}</div>";
         $body[]="<input type='checkbox' id='modal-toggle{$id}' class='modal-toggle' /><div id='{$id}Mdl' class='mdl'>".implode('', $mdl)."</div>";
-            return '<label id="'.$id.'" for="modal-toggle'.$id.'" class="open-btn">'.$id.'</label>';
+            return '<label id="'.$id.'" for="modal-toggle'.$id.'" class="openModal">'.$id.'</label>';
 
 }
 
