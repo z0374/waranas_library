@@ -597,7 +597,16 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
     return $body;
 }
 
+function BRL($valor) {
+    // Garante que o valor seja float
+    $valor = floatval($valor);
 
+    // Formata com 2 casas decimais, vírgula como separador decimal e ponto como separador de milhar
+    $formatado = number_format($valor, 2, ',', '');
+
+    // Adiciona o prefixo R$
+    return 'R$' . $formatado;
+}
 
 
 
