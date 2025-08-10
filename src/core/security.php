@@ -1,5 +1,6 @@
 <?php
 
+
 function aesEncrypt($data, $key) {
     $iv_length = openssl_cipher_iv_length('aes-256-cbc');
     $iv = random_bytes($iv_length);

@@ -24,5 +24,6 @@ foreach (glob(SRC_PATH . '/helpers/*.php') as $filename) {
 
 // 5. Carrega todos os componentes disponíveis.
 foreach (glob(SRC_PATH . '/components/*.php') as $filename) {
+
     require_once $filename;
 }
