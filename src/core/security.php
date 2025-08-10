@@ -1,6 +1,4 @@
 <?php
-// ATENÇÃO: Bug crítico corrigido. O código original usava uma variável indefinida '$chave'.
-// A função agora usa corretamente o parâmetro '$key' que é passado para ela.
 
 function aesEncrypt($data, $key) {
     $iv_length = openssl_cipher_iv_length('aes-256-cbc');

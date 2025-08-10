@@ -1,0 +1,62 @@
+/* =================================
+   1. Reset Básico e Padrões Globais
+   ================================= */
+
+/* O seletor universal (*) aplica estas regras a TODOS os elementos da página. */
+* {
+    margin: 0;                      /* Remove as margens externas padrão. */
+    padding: 0;                     /* Remove o preenchimento interno padrão. */
+    border: none;                   /* Remove todas as bordas. */
+    box-sizing: border-box;         /* Muda o cálculo de largura/altura para incluir padding e border. Essencial para layouts consistentes. */
+    font-family: Arial, sans-serif; /* Define uma fonte padrão limpa e segura. */
+    text-decoration: none;          /* Remove o sublinhado de links. */
+    outline: none;                  /* Remove a borda de foco que aparece ao clicar em inputs e links. */
+}
+
+/* =================================
+   2. Estilos do Corpo (Body)
+   ================================= */
+
+body {
+    width: 100vw;                   /* Garante que o corpo ocupe 100% da largura da tela. */
+    min-height: 100vh;              /* Garante que o corpo ocupe no mínimo 100% da altura da tela, empurrando o rodapé para baixo. */
+    display: flex;                  /* Ativa o modo Flexbox. */
+    flex-direction: column;         /* Organiza os filhos diretos (header, main, footer) em uma coluna vertical. */
+    align-items: center;            /* Centraliza o conteúdo no eixo horizontal. */
+    text-align: center;             /* Centraliza o texto dentro dos elementos. */
+    background-color: #f0f2f5;      /* Define uma cor de fundo padrão suave (pode ser sobrescrita pela variável $bgbody). */
+}
+
+/* =================================
+   3. Estilos de Interatividade
+   ================================= */
+
+/* Efeito de feedback visual para elementos clicáveis */
+a:hover,
+button:hover,
+label:hover,
+summary:hover {
+    opacity: 0.7;                   /* Deixa o elemento levemente transparente ao passar o mouse. */
+    transition: opacity 0.2s;       /* Adiciona uma transição suave ao efeito. */
+}
+
+/* Define o cursor do mouse para indicar que são clicáveis. */
+a,
+button,
+label,
+summary {
+    cursor: pointer;
+}
+
+/* =================================
+   4. Estilo Padrão do Rodapé
+   ================================= */
+
+footer {
+    width: 100%;                    /* Ocupa toda a largura. */
+    text-align: center;             /* Centraliza o texto. */
+    padding: 20px;                  /* Adiciona um espaçamento interno. */
+    margin-top: auto;               /* "Empurra" o rodapé para o final da página em telas com pouco conteúdo. */
+    background-color: #333;         /* Fundo escuro padrão. */
+    color: white;                   /* Texto branco para contraste. */
+}
