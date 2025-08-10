@@ -1,0 +1,57 @@
+/* Estilos estáticos para o componente slideshow */
+.slideshow {
+    position: relative;
+    border: solid 0.03vh black;
+    overflow: hidden;
+}
+
+.items_slideshow {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    overflow: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scroll-snap-type: x mandatory;
+    transition: transform 0.9s ease;
+}
+
+.items_slideshow::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+.item {
+    min-width: 100%;
+    height: 100%;
+    scroll-snap-align: center;
+    cursor: default;
+}
+
+.item:hover {
+    opacity: 1;
+}
+
+.slideshow #bt {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    z-index: 10;
+    text-align: center;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.06);
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 2rem;
+}
+
+.slideshow:hover #bt {
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+
+.slideshow #bt:hover {
+    opacity: 0.8;
+}

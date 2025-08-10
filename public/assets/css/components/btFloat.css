@@ -1,0 +1,6 @@
+.btFloat {
+    opacity: 0.09;
+}
+.btFloat:hover {
+    opacity: 0.9;
+}
