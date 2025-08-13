@@ -8,8 +8,6 @@ function cachePage($title, $content, $mode = 'create', $force_update = false) {
     $arquivo = $cacheDir . '/' . $title . '.html';
     $tempoDeExpiracao = 43200; // 12 horas em segundos
 
-    // ATENÇÃO: Bug corrigido. A verificação original 'if($update=true)' era uma atribuição,
-    // o que sempre resultava em 'true'. Corrigido para 'if($force_update == true)'.
     if (file_exists($arquivo) && !$force_update) {
         $fileCreationTime = filemtime($arquivo);
         if ((time() - $fileCreationTime) < $tempoDeExpiracao) {
