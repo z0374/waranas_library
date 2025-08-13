@@ -35,7 +35,9 @@ function html($tempo = 'real-time') {
             $head_html .= implode("\n", $mobile);
             $head_html .= "    }\n";
         }
+        
         $head_html .= "    </style>\n";
+        $head_html .= implode('', $head);
     }
     $head_html .= "</head>\n";
 
