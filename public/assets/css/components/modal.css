@@ -3,6 +3,7 @@
     height: 100vh;
     visibility: hidden;
     opacity: 0;
+    justify-content: center;
     align-items: center;
     display: flex;
     background-color: #0000009b;

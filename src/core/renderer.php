@@ -6,7 +6,8 @@ function html($tempo = 'real-time') {
     $lang = !empty($lang) ? $lang : 'pt-br';
     $head[] = "<title>" . implode('', $title) . "</title>";
     $head[] = "<link rel='icon' href='" . implode('', $favicon) . "'>";
-
+    $head[] = "<meta charset='utf-8'>";
+    $head[] = "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
     // --- Monta a string do <head> ---
     $head_html = "<head>" . implode('', $head);
 
