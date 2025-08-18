@@ -50,11 +50,13 @@ function html($tempo = 'real-time') {
         . implode('', $body);
 
     // Adiciona os scripts JS (lógica inalterada da etapa anterior)
-    $body_html .= '<script src="assets/js/main.js"></script>';
-    $unique_scripts = array_unique($script_files);
-    foreach ($unique_scripts as $file) {
-        $body_html .= '<script src="' . htmlspecialchars($file) . '"></script>';
-    }
+    
+    for($i = 0; $i < count($script_files); $i++){
+            $script_files[$i] = file_get_contents($script_files[$i]);
+        }
+    
+    array_unshift($script, ...$script_files);
+
     if (!empty($script)) {
         $body_html .= '<script>' . implode('', $script) . '</script>';
     }

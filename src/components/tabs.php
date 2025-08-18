@@ -5,12 +5,25 @@ function tabs($array, $bg) {
     $content = [];
     $check = [];
     $length = count($array);
-
+if(!empty($array) || $length == 0) { 
+    $tabs[] = "
+        <label for='tabXXX'></label>
+    ";
+    $content[] = "
+        <input class='tabsBt' name='tabs' type='radio' id='tabXXX' checked>
+        <div class='content' id='cntXXX'><p></p></div>
+    ";
+    $check[] = "
+        input#tabXXX:checked ~ #cntXXX
+    ";
+}
+else{
     for ($i = 0; $i < $length; $i++) {
         $tabs[] = "<label for='tab{$i}'>{$array[$i]['title']}</label>";
         $content[] = "<input class='tabsBt' name='tabs' type='radio' id='tab{$i}' " . ($i == 0 ? 'checked' : '') . "><div class='content' id='cnt{$i}'><p>{$array[$i]['content']}</p></div>";
         $check[] = "input#tab{$i}:checked ~ #cnt{$i}";
     }
+}
 
     // Estilos 100% dinâmicos
     $style[] = "
