@@ -1,0 +1,59 @@
+
+        .navegation{
+            background-color:#000000;
+        }
+        #menubtCapa:checked ~ #menuContentbtCapa{visibility:visible; display:flex;}#menucardapio:checked ~ #menuContentcardapio{visibility:visible; display:flex;}header {
+            width: 100vw;
+            height: 3rem;
+            align-items: center;
+            display: flex;
+            flex-flow: row nowrap;
+            padding: 0 3%;
+            position: relative;
+            top: 0;
+            justify-content: space-between;
+            background: linear-gradient(to bottom right, var(--colorToneHeaderDark) 60%, var(--colorToneHeaderLight) 100%);
+            color: var(--colorS);
+        }
+        header .navegation { 
+            width: 30%;
+            height: 100%;
+            background:transparent;
+        }
+        header h1 {
+            overflow-x:visible;
+            font-family: ChunkFive, cursive;
+            font-size: 1.5rem;
+            text-align: center;
+            align-self:center;
+        }
+        header h2, header p {
+            font-family: Architects Daughter, cursive;
+            font-size: 1.5rem;
+            text-decoration: underline;
+            margin-bottom: 3rem;
+        }
+
+@media (max-width: 1080px){
+    header {
+        height: auto;
+        overflow: visible;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-flow: column;
+        padding: 1rem;
+    }
+    header .navegation {
+        width: 100%;
+    }
+    header #search {
+        min-width:12rem; height: 3rem; margin:0.9%;
+    }
+    header h1 {
+        font-size: 12vw;
+    }
+    header h2 {
+        font-size: 6vw;
+    }
+}

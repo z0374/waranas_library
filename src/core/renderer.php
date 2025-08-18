@@ -1,7 +1,7 @@
 <?php
 
 function html($tempo = 'real-time') {
-    global $lang, $head, $fonts, $style, $styleLink, $body, $header, $main, $footer, $script, $mobile, $title, $favicon, $script_files, $css_files; // Adiciona $css_files
+    global $lang, $head, $fonts, $style, $styleVar, $styleLink, $body, $header, $main, $footer, $script, $mobile, $title, $favicon, $script_files, $css_files; // Adiciona $css_files
 
     $lang = !empty($lang) ? $lang : 'pt-br';
     $head[] = "<title>" . implode('', $title) . "</title>";
@@ -11,13 +11,17 @@ function html($tempo = 'real-time') {
     $head_html = "<head>" . implode('', $head);
 
     // 1. Carrega o CSS global
-    $head_html .= '<link rel="stylesheet" href="assets/css/style.css">';
+    for($i = 0; $i < count($css_files); $i++){
+        $css_files[$i] = file_get_contents($css_files[$i]);
+    }
+    
+    array_unshift($style, ...$css_files);
 
     // 2. Carrega os arquivos CSS dos componentes (sob demanda)
-    $unique_css_files = array_unique($css_files);
+    /*$unique_css_files = array_unique($css_files);
     foreach ($unique_css_files as $file) {
         $head_html .= '<link rel="stylesheet" href="' . htmlspecialchars($file) . '">';
-    }
+    }*/
 
     // 3. Carrega o styleLink customizado, se houver
     if (!empty($styleLink[0])) {
@@ -25,7 +29,10 @@ function html($tempo = 'real-time') {
     }
 
     // 4. Injeta os estilos dinâmicos e de fontes na tag <style>
-    $head_html .= "<style>"
+    $head_html .= "<style>
+        :root {"
+        . implode('', $styleVar)
+        . "}"
         . implode('', $fonts)
         . implode('', $style) .
         "@media(max-width:900px){" . implode('', $mobile) . "}

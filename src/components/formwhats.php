@@ -3,7 +3,7 @@ function formwhats($id, $phone, $bg) {
     global $script, $style, $script_files;
 
     // Registra o script do componente
-    $component_script = 'assets/js/components/whatsapp.js';
+    $component_script = ROOT_PATH . '/public/assets/js/components/whatsapp.js';
     if (!in_array($component_script, $script_files)) {
         $script_files[] = $component_script;
     }

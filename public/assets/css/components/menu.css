@@ -1,21 +1,17 @@
 /* Estilos estáticos para o componente de menu */
-.navegation {
-    width: 100%;
-    height: auto;
-    font-size: 1.2rem;
-    font-weight: bolder;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 15px 1.2vw;
+.navegation{
+    width:100%;
+    height:6%;
+    font-size:1.2rem;
+    font-weight:bolder;
+    display:flex;align-items:center;
+    justify-content:space-around;
+    padding:0 1.2vw;
 }
-
-.navegation a {
-    padding: 0.09em;
-    color: white; /* Cor de texto padrão */
-    text-decoration: none;
+.navegation a, .navegation label{
+    padding:0.09em;
 }
-
-.navegation a:hover {
-    opacity: 0.7;
+.navegation input[type='radio']:checked + .menuLabel{
+    text-decoration:underline;
+    opacity:0.3;
 }

@@ -2,7 +2,7 @@
 function btFloat($name, $lnk) {
     global $body, $style, $css_files;
 
-    $component_css = 'assets/css/components/btFloat.css';
+    $component_css = ROOT_PATH . '/public/assets/css/components/btFloat.css';
     if (!in_array($component_css, $css_files)) {
         $css_files[] = $component_css;
     }

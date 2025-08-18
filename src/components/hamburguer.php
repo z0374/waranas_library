@@ -3,9 +3,9 @@ function hamburguer($mode, $array, $tm) {
     global $style, $script_files;
 
     // Registra o script do componente para ser carregado
-    $component_script = 'assets/js/components/hamburguer.js';
+    $component_script = ROOT_PATH . '/public/assets/js/components/hamburguer.js';
     if (!in_array($component_script, $script_files)) {
-        $script_files[] = $component_script;
+        $script_files[] = $component_scriptf;
     }
 
     $hamburguer = [];
