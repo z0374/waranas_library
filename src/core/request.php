@@ -36,7 +36,7 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
     if ($response === false) {
         $error = curl_error($ch);
         curl_close($ch);
-        return ['error' => 'cURL Error: ' . $error];
+        return [];
     }
     
     $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
@@ -45,7 +45,7 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
     curl_close($ch);
 
     // O resto da lógica para salvar arquivos ou decodificar JSON...
-    $json = json_decode($body, true);
+    $json = json_decode(json: $body, associative: true);
     if (json_last_error() === JSON_ERROR_NONE) {
         return $json;
     }
