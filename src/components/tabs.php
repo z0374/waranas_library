@@ -5,7 +5,7 @@ function tabs($array, $bg) {
     $content = [];
     $check = [];
     $length = count($array);
-if(!empty($array) || $length == 0) { 
+if(empty($array) || $length == 0) { 
     $tabs[] = "
         <label for='tabXXX'></label>
     ";
