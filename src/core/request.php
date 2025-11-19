@@ -59,7 +59,7 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
         $fileName = preg_replace('/[^A-Za-z0-9]/', '', $namePart);
         
         // Define o caminho completo para salvar o arquivo
-        $imagePath = dirname(ROOT_PATH_WARANAS_LIB) . '/assets/images/';
+        $imagePath = basename(dirname(ROOT_PATH_WARANAS_LIB)) . '/assets/images/';
         $targetPath = $imagePath . $fileName . $extPart;
 
         // Garante que o diretório de imagens exista
