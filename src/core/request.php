@@ -1,5 +1,8 @@
 <?php
 function getJsonData($url, $parametro, $authToken, $pageToken = null) {
+    // DIR_BASE deve estar definido no escopo global (ex: no index.php)
+    global $DIR_BASE;
+
     if (!is_array($parametro) || count($parametro) !== 2) {
         return ['error' => 'Parâmetro inválido'];
     }
@@ -34,6 +37,7 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     
     if ($response === false) {
+        // Erro de cURL (ex: timeout, conexão)
         $error = curl_error($ch);
         curl_close($ch);
         return [];
@@ -44,11 +48,39 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
     $body = substr($response, $headerSize);
     curl_close($ch);
 
-    // O resto da lógica para salvar arquivos ou decodificar JSON...
-    $json = json_decode(json: $body, associative: true);
-    if (json_last_error() === JSON_ERROR_NONE) {
-        return $json;
+    // -----------------------------------------------------
+    // 1. Lógica de Salvamento de Imagem (Conteúdo Binário)
+    // -----------------------------------------------------
+
+    if (preg_match('/Content-Disposition:.*?filename="(.*?)"/i', $headersRaw, $matches)) {
+        $fileName = $matches[1];
+        
+        // Define o caminho completo para salvar o arquivo
+        $imagePath = ($DIR_BASE ?? __DIR__) . '/assets/images/';
+        $targetPath = $imagePath . $fileName;
+
+        // Garante que o diretório de imagens exista
+        if (!is_dir($imagePath)) {
+            mkdir($imagePath, 0755, true);
+        }
+        
+        // Verifica o Content-Type para confirmar que é um tipo de arquivo válido (imagem/pdf/etc)
+        if (preg_match('/Content-Type: (image\/\w+)/i', $headersRaw, $typeMatches)) {
+            // Salva o corpo binário no disco
+            if (file_put_contents($targetPath, $body) !== false) {
+                // Retorna o nome do arquivo, que será usado para construir a URL no frontend
+                return $fileName; 
+            }
+        }
     }
 
-    return $body; // Retorna o corpo como string se não for JSON.
+    // -----------------------------------------------------
+    // 2. Lógica de Decodificação (Conteúdo JSON ou Texto)
+    // -----------------------------------------------------
+    $json = json_decode(json: $body, associative: true);
+    if (json_last_error() === JSON_ERROR_NONE) {
+        return $json; // Retorna o array PHP
+    }
+
+    return $body; // Retorna o corpo como string (útil para listas de IDs, ou erro do D1).
 }
