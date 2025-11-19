@@ -1,7 +1,7 @@
 <?php
+
 function getJsonData($url, $parametro, $authToken, $pageToken = null) {
     // DIR_BASE deve estar definido no escopo global (ex: no index.php)
-    global $DIR_BASE;
 
     if (!is_array($parametro) || count($parametro) !== 2) {
         return ['error' => 'Parâmetro inválido'];
@@ -53,10 +53,10 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
     // -----------------------------------------------------
 
     if (preg_match('/Content-Disposition:.*?filename="(.*?)"/i', $headersRaw, $matches)) {
-        $fileName = $matches[1];
+        $fileName = preg_replace('/[^A-Za-z0-9]/', '', $matches[1]);
         
         // Define o caminho completo para salvar o arquivo
-        $imagePath = ($DIR_BASE ?? __DIR__) . '/assets/images/';
+        $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/assets/images/';
         $targetPath = $imagePath . $fileName;
 
         // Garante que o diretório de imagens exista
