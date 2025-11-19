@@ -2,7 +2,7 @@
 function modal($id, $array, $color) {
     global $style, $mobile, $body, $css_files;
 
-    $component_css = ROOT_PATH . '/public/assets/css/components/modal.css';
+    $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/modal.css';
     if (!in_array($component_css, $css_files)) {
         $css_files[] = $component_css;
     }

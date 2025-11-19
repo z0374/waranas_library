@@ -3,7 +3,7 @@ function sliding($direction, $array, $id, $bg) {
     global $style, $css_files;
 
     // Registra a folha de estilo estática
-    $component_css = ROOT_PATH . '/public/assets/css/components/sliding.css';
+    $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/sliding.css';
     if (!in_array($component_css, $css_files)) {
         $css_files[] = $component_css;
     }

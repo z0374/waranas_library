@@ -22,12 +22,12 @@ $css_files = [];
 $script_files = [];
 
 // Adiciona o CSS de reset globalmente
-    $component_css = ROOT_PATH . '/public/assets/css/reset.css';
+    $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/reset.css';
     if (!in_array($component_css, $css_files)) {
         $css_files[] = $component_css;
     }
 
-    $component_script = ROOT_PATH . '/public/assets/js/main.js';
+    $component_script = ROOT_PATH_WARANAS_LIB . '/public/assets/js/main.js';
     if (!in_array($component_script, $script_files)) {
         $script_files[] = $component_script;
     }

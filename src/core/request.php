@@ -53,10 +53,13 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
     // -----------------------------------------------------
 
     if (preg_match('/Content-Disposition:.*?filename="(.*?)"/i', $headersRaw, $matches)) {
-        $fileName = preg_replace('/[^A-Za-z0-9]/', '', $matches[1]);
+        $namePart = pathinfo($matches[1], PATHINFO_FILENAME);   // ex: "foto do carro"
+        $extPart  = pathinfo($matches[1], PATHINFO_EXTENSION);  // ex: "png"
+
+        $fileName = preg_replace('/[^A-Za-z0-9]/', '', $namePart);
         
         // Define o caminho completo para salvar o arquivo
-        $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/assets/images/';
+        $imagePath = dirname(ROOT_PATH_WARANAS_LIB) . '/assets/images/';
         $targetPath = $imagePath . $fileName;
 
         // Garante que o diretório de imagens exista
@@ -69,7 +72,7 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
             // Salva o corpo binário no disco
             if (file_put_contents($targetPath, $body) !== false) {
                 // Retorna o nome do arquivo, que será usado para construir a URL no frontend
-                return $targetPath; 
+                return $targetPath.$extPart; 
             }
         }
     }

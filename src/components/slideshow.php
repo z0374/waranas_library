@@ -2,12 +2,12 @@
 function slideshow($id, $array, $tm, $auto) {
     global $style, $script, $fscript, $mobile, $css_files, $script_files;
 
-    $component_css = ROOT_PATH . '/public/assets/css/components/slideshow.css';
+    $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/slideshow.css';
     if (!in_array($component_css, $css_files)) {
         $css_files[] = $component_css;
     }
 
-    $component_script = ROOT_PATH . '/public/assets/js/components/slideshow.js';
+    $component_script = ROOT_PATH_WARANAS_LIB . '/public/assets/js/components/slideshow.js';
     if (!in_array($component_script, $script_files)) {
         $script_files[] = $component_script;
     }

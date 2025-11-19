@@ -9,7 +9,7 @@ function menu($array, $bg) {
             background-color:{$bg};
         }
         "; // style do menu
-    $component_css = ROOT_PATH . '/public/assets/css/components/menu.css';
+    $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/menu.css';
     if (!in_array($component_css, $css_files)) {
         $css_files[] = $component_css;
     }
