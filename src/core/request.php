@@ -69,7 +69,7 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
             // Salva o corpo binário no disco
             if (file_put_contents($targetPath, $body) !== false) {
                 // Retorna o nome do arquivo, que será usado para construir a URL no frontend
-                return $fileName; 
+                return $targetPath; 
             }
         }
     }
