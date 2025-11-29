@@ -1,4 +1,5 @@
 <?php
+require_once ROOT_PATH_WARANAS_LIB . "/src/debug/logs.php";
 
 function getJsonData($url, $parametro, $authToken, $pageToken = null) {
     // DIR_BASE deve estar definido no escopo global (ex: no index.php)
@@ -13,7 +14,9 @@ function getJsonData($url, $parametro, $authToken, $pageToken = null) {
     $query = http_build_query(['tbl' => $tabela, $identKey => $idOuTipo]);
     $full_url = $url . '?' . $query;
 
-    $origin = (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'];
+    $origin = $_SERVER['HTTP_HOST'];
+    
+logs($origin,"testItems");
 
     $headers = [
         'Authorization: ' . $authToken,
