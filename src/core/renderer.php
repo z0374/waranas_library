@@ -66,7 +66,7 @@ function html($tempo = 'real-time') {
 
 
     // --- Combina tudo ---
-    $final_html = "<!DOCTYPE html><html lang=\"" . htmlspecialchars($lang) . "\">" . $head_html . $body_html . "</html>";
+    $final_html = '<!DOCTYPE html><html lang="' . htmlspecialchars($lang) . '">' . $head_html . $body_html . '</html>';
 
 
     // Lógica de cache e exibição
