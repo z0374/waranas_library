@@ -1,4 +1,19 @@
 <?php
+/**
+ * Gera o HTML para exibir um ícone do Sprite
+ * * @param string $id O ID do ícone (ex: 'icone-brasao')
+ * @param string $class Classes CSS adicionais (opcional)
+ * @param string $style Estilos CSS inline (opcional)
+ * @return string O HTML pronto do ícone
+ */
+function getIcon($id, $class = '', $style = '') {
+    // Adiciona uma classe padrão 'icon' se quiser
+    $finalClass = trim("icon " . $class);
+    
+    return "<svg class='{$finalClass}' style='{$style}'>
+                <use href='#{$id}'></use>
+            </svg>";
+}
 
 function addSvg($input, $idSymbol) {
     global $SVG;
@@ -81,4 +96,11 @@ function addSvg($input, $idSymbol) {
     // Salva na global
     $SVG = $domSprite->saveXML($domSprite->documentElement);
     libxml_clear_errors();
+
+    $classesFinais = trim("icon {$idSymbol}");
+
+    // AJUSTE 3: Retorno do HTML para uso imediato
+    return "<svg class='{$classesFinais}'>
+                <use href='#{$idSymbol}'></use>
+            </svg>";
 }

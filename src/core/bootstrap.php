@@ -19,7 +19,12 @@ foreach (glob(ROOT_PATH_WARANAS_LIB . '/src/helpers/*.php') as $filename) {
     require_once $filename;
 }
 
-// 5. Carrega todas as funções de componentes
+// 5. Carrega todas as funções de utilidades (utils)
+foreach (glob(ROOT_PATH_WARANAS_LIB . '/src/utils/*.php') as $filename) {
+    require_once $filename;
+}
+
+// 6. Carrega todas as funções de componentes
 foreach (glob(ROOT_PATH_WARANAS_LIB . '/src/components/*.php') as $filename) {
     require_once $filename;
 }
