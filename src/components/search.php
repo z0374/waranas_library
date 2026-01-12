@@ -22,6 +22,7 @@ function search($tm, $lnksData) {
         #search input{width:57%;}
         #search button{width:24%;}
     ";
+    $lupa = getSVG("lupa", "lupaSVG");
 
     $campo = '<input aria-label="barra de pesquisa" id="busca" placeholder="Pesquise..." type="text">';
     return "<span id='search'>{$campo}<a aria-label='resetar pesquisa' href='?'></a><button aria-label='Buscar' id='busque' onclick='pesquisar(data)'>" . $lupa . "</button></span>";

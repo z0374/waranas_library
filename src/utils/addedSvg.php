@@ -6,11 +6,11 @@
  * @param string $style Estilos CSS inline (opcional)
  * @return string O HTML pronto do ícone
  */
-function getIcon($id, $class = '', $style = '') {
+function getSVG($id, $class = '') {
     // Adiciona uma classe padrão 'icon' se quiser
     $finalClass = trim("icon " . $class);
     
-    return "<svg class='{$finalClass}' style='{$style}'>
+    return "<svg class='{$finalClass}'>
                 <use href='#{$id}'></use>
             </svg>";
 }
