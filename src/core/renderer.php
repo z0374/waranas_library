@@ -1,7 +1,7 @@
 <?php
 
 function html($tempo = 'real-time') {
-    global $lang, $head, $fonts, $style, $styleVar, $styleLink, $body, $header, $main, $footer, $script, $mobile, $title, $favicon, $script_files, $css_files; // Adiciona $css_files
+    global $lang, $head, $fonts, $style, $styleVar, $styleLink, $SVG, $body, $header, $main, $footer, $script, $mobile, $title, $favicon, $script_files, $css_files; // Adiciona $css_files
 
     $lang = !empty($lang) ? $lang : 'pt-br';
     $head[] = "<title>" . implode('', $title) . "</title>";
@@ -45,6 +45,7 @@ function html($tempo = 'real-time') {
 
     // --- Monta o restante do documento ---
     $body_html = "<body>
+        " . ($SVG ?? '') . "
         <header>" . implode('', $header) . "</header>
         <main>" . implode('', $main) . "</main>
         <footer>" . implode('', $footer) . "</footer>"

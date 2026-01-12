@@ -9,6 +9,8 @@ $footer = [];
 $body = [];
 $fonts = [];
 $styleLink = [''];
+
+$svg = null;
 $lang = 'pt-br';
 
 // Arrays para estilos e scripts dinâmicos (injetados na página)

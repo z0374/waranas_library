@@ -4,7 +4,8 @@
 require_once ROOT_PATH_WARANAS_LIB . '/src/globals.php';
 
 // 2. Carrega os SVGs
-require_once ROOT_PATH_WARANAS_LIB . '/src/svg.php';
+require_once ROOT_PATH_WARANAS_LIB . '/src/utils/addedSvg.php';
+require_once ROOT_PATH_WARANAS_LIB . '/src/components/svg.php';
 
 // 3. Carrega todas as funções do núcleo (core)
 require_once ROOT_PATH_WARANAS_LIB . '/src//core/renderer.php';
