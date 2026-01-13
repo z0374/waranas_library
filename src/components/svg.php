@@ -9,7 +9,14 @@ addSvg('
 </svg>', 'lupa');
 
 addSvg("
-<svg class='envelope' viewBox='0 0 300 180' stroke-width='12px' stroke='currentColor' fill='none' xmlns='http://www.w3.org/2000/svg'>
-    <rect width='300' height='180' rx='15' ry='15'/>
-    <polyline points='10 20 150 100 290 20' stroke-width='15px'/>
-</svg>", "envelope");
+<svg class='envelope' viewBox='0 0 3000 3000' xmlns='http://www.w3.org/2000/svg'>
+<rect x='150' y='750'
+    rx='15' ry='15'
+    style='width:2700; height:1500; fill: none; stroke: currentColor; stroke-width: 300;' />
+
+<path
+    d=' M 150 750 L 2850 750 L 2850 900
+        L 1580 1500 C 1580 1500 1500 1555 1420 1500
+        L 1420 1500 L 150 900 Z'
+    style='fill: none; stroke: currentColor; stroke-width: 300; stroke-linejoin: round;' />
+    </svg>", "envelope");

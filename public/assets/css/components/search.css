@@ -28,11 +28,13 @@
     height: 100%;
     border-radius: 0.9vh;
     display: flex;
+    justify-content: center;
     align-items: center;
     font-size: 100%;
     font-weight: bold;
     cursor: pointer;
     z-index: 3;
+    color: #363636;
 }
 #search a {
     min-width: 44px;
@@ -46,9 +48,9 @@
 #search a:hover {
     background: rgba(90, 90, 90, 0.09);
 }
+
+
 #search svg {
     width: 45%;
     height: 51%;
-    overflow: visible;
-    stroke: #787878;
 }
