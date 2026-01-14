@@ -10,7 +10,7 @@ function getSVG($id, $class = '') {
     // Adiciona uma classe padrão 'icon' se quiser
     $finalClass = trim("icon " . $class);
     
-    return "<svg class='{$finalClass}'>
+    return "<svg class='{$finalClass}' style='width: 1em !important; height:1em !important;'>
                 <use href='#{$id}'></use>
             </svg>";
 }

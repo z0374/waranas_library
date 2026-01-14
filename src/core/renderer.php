@@ -12,8 +12,8 @@ function html($tempo = 'real-time') {
     $head_html = "<head>" . implode('', $head);
 
     // 1. Carrega o CSS global
-    for($i = 0; $i < count($css_files); $i++){
-        $css_files[$i] = file_get_contents($css_files[$i]);
+    for($i = count($css_files); $i > 0 ; $i--){
+        $css_files[$i-1] = file_get_contents($css_files[$i-1]);
     }
     
     array_unshift($style, ...$css_files);
