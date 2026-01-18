@@ -48,7 +48,24 @@
 #search a:hover {
     background: rgba(90, 90, 90, 0.09);
 }
+.waranasSearchItems{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.waranasSearchItemsReturn{
+    width: 100%;
+    min-height: 45px;
+    margin-top: auto;
+    font-size: 100%;
+    font-weight: bolder;
+    background-color: rgba(90, 90, 90, 0.18);
+}
+
+.waranasSearchItemsReturn:hover{
+    background-color: rgba(90, 90, 90, 0.6);
+}
 
 #search svg {
     width: 45%;

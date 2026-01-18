@@ -1,6 +1,6 @@
 <?php
-function search($tm, $lnksData) {
-    global $style, $script, $fscript, $mobile, $lupa, $css_files, $script_files;
+function search($tm, $lnksData, $htmlResult) {
+    global $style, $script, $mobile, $lupa, $css_files, $script_files;
 
     $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/search.css';
     if (!in_array($component_css, $css_files)) {
@@ -23,7 +23,7 @@ function search($tm, $lnksData) {
         #search button{width:24%;}
     ";
     $lupa = getSVG("lupa", "lupaSVG");
-
+    $safeHTMLResult = strval($htmlResult);
     $campo = '<input aria-label="barra de pesquisa" id="busca" placeholder="Pesquise..." type="text">';
-    return "<span id='search'>{$campo}<a aria-label='resetar pesquisa' href='?'></a><button aria-label='Buscar' id='busque' onclick='pesquisar(data)'>" . $lupa . "</button></span>";
+    return "<span id='search'>{$campo}<a aria-label='resetar pesquisa' href='?'></a><button aria-label='Buscar' id='busque' onclick='pesquisar(data, `text`, `$safeHTMLResult`)'>" . $lupa . "</button></span>";
 }

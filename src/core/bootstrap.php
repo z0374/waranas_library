@@ -11,6 +11,7 @@ require_once ROOT_PATH_WARANAS_LIB . '/src/components/svg.php';
 require_once ROOT_PATH_WARANAS_LIB . '/src//core/renderer.php';
 require_once ROOT_PATH_WARANAS_LIB . '/src/core/cache.php';
 require_once ROOT_PATH_WARANAS_LIB . '/src/core/database.php';
+require_once ROOT_PATH_WARANAS_LIB . '/src/core/env.php';
 require_once ROOT_PATH_WARANAS_LIB . '/src/core/request.php';
 require_once ROOT_PATH_WARANAS_LIB . '/src/core/security.php';
 

@@ -1,0 +1,6 @@
+# Bloqueia o acesso a todos os arquivos deste diretório
+Order allow,deny
+Deny from all
+
+# Bloqueia o acesso a todos os arquivos deste diretório
+Require all denied
