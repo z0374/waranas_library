@@ -26,9 +26,9 @@ function pesquisar(data, tipo, htmlResult) {
   function relevancia(item) {
     let score = 0;
     searchTerms.forEach(term => {
-      score += scoreField(item.ttl, term) * 5;   // TTL mais importante
-      score += scoreField(item.lgd, term) * 3;   // LGD
-      score += scoreField(item.cnt, term) * 2;   // CNT
+      score += scoreField(item.titulo, term) * 5;   // titulo mais importante
+      score += scoreField(item.legenda, term) * 3;   // legenda
+      score += scoreField(item.text, term) * 2;   // text
       const tagsArray = item.tags.toLowerCase().split(",").map(t => t.trim());
       tagsArray.forEach(tag => {
         score += scoreField(tag, term);          // tags
@@ -65,20 +65,20 @@ function pesquisar(data, tipo, htmlResult) {
       const li = document.createElement("li");
 
       const h1 = document.createElement("h1");
-      h1.innerHTML = highlight(item.ttl);
+      h1.innerHTML = highlight(item.titulo);
 
       const h2 = document.createElement("h2");
-      h2.innerHTML = `(${highlight(item.lgd)})`;
+      h2.innerHTML = `(${highlight(item.legenda)})`;
 
       const a = document.createElement("a");
-      a.innerHTML = highlight(item.cnt);
+      a.innerHTML = highlight(item.text);
 	  a.innerHTML += " <svg class='icon arrowClick' style='width: 1em !important; height:1em !important;'><use href='#arrow'></use></svg>";
       a.href = item.anc;
 
       li.append(h1, h2, a);
       result.appendChild(li);
     } else if (tipo === "custom") {
-      result.appendChild(document.createTextNode(item.ttl));
+      result.appendChild(document.createTextNode(item.titulo));
     }
   });
 
