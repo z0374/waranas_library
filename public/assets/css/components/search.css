@@ -18,7 +18,8 @@
     height: 100%;
     font-size: 100%;
     border-radius: 0.9vh;
-    margin-left: 3%;
+    padding-left: 3%;
+    outline: none;
     z-index: 3;
 }
 #search button {
