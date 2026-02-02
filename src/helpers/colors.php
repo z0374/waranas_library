@@ -1,6 +1,6 @@
 <?php
 
-function colorTone($hex, $percent, $mode = 'darken') {
+function colorTone($hex, $percent, $mode = 'darken' || 'lighten') {
     // Remove o símbolo # se presente
     $hex = ltrim($hex, '#');
 
