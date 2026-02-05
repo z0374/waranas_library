@@ -4,8 +4,26 @@ function html($tempo = 'real-time') {
     global $lang, $head, $fonts, $style, $styleVar, $styleLink, $SVG, $body, $header, $main, $footer, $script, $mobile, $title, $favicon, $script_files, $css_files; // Adiciona $css_files
 
     $lang = !empty($lang) ? $lang : 'pt-br';
+
+    // 1. Normaliza a URL (garante que é string, já que você usava implode)
+$favUrl = is_array($favicon) ? implode('', $favicon) : $favicon;
+
+// 2. Extrai a extensão do arquivo (ignorando parâmetros como ?v=1)
+$path = parse_url($favUrl, PHP_URL_PATH);
+$ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+
+// 3. Define o MIME Type correto baseado na extensão
+$mimeType = match ($ext) {
+    'svg' => 'image/svg+xml',
+    'ico' => 'image/x-icon',
+    'png' => 'image/png',
+    'gif' => 'image/gif',
+    'jpg', 'jpeg' => 'image/jpeg',
+    default => 'image/svg+xml' // Fallback padrão (ou deixe vazio se preferir)
+};
+
     $head[] = "<title>" . implode('', $title) . "</title>";
-    $head[] = "<link rel='icon' href='" . implode('', $favicon) . "'>";
+    $head[] = "<link rel='icon' type='{$mimeType}' href='{$favUrl}'>";
     $head[] = "<meta charset='utf-8'>";
     $head[] = "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
     // --- Monta a string do <head> ---
