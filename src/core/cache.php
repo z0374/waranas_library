@@ -1,28 +1,28 @@
 <?php
-function cachePage($title, $content, $mode = 'create', $force_update = false) {
-    $cacheDir = __DIR__ . '/../../cache'; // Aponta para o diretório cache na raiz
-    if (!is_dir($cacheDir)) {
-        mkdir($cacheDir, 0755, true);
-    }
+function cachePage($title, $content = null, $mode = 'create', $force_update = false) {
+    $arquivo = ROOT_PATH_WARANAS_LIB . '/cache/' . md5($title) . '.html';
+    $validade = 43200; // 12 horas
 
-    $arquivo = $cacheDir . '/' . $title . '.html';
-    $tempoDeExpiracao = 43200; // 12 horas em segundos
-
-    // ATENÇÃO: Bug corrigido. A verificação original 'if($update=true)' era uma atribuição,
-    // o que sempre resultava em 'true'. Corrigido para 'if($force_update == true)'.
-    if (file_exists($arquivo) && !$force_update) {
-        $fileCreationTime = filemtime($arquivo);
-        if ((time() - $fileCreationTime) < $tempoDeExpiracao) {
-            header("Content-Type: text/html; charset=UTF-8");
-            readfile($arquivo);
-            exit();
+    // 1. TENTATIVA DE ENTREGA IMEDIATA
+    if (!$force_update && file_exists($arquivo)) {
+        // Se for modo return e expirou, sai para processar
+        if ($mode === 'return' && (time() - filemtime($arquivo) > $validade)) {
+            return; 
         }
+        header("Content-Type: text/html; charset=UTF-8");
+        header("X-Cache: HIT");
+        readfile($arquivo);
+        exit;
     }
 
-    // Se o cache não existe, expirou, ou a atualização foi forçada, (re)cria o arquivo.
-    if ($mode == 'create') {
-        file_put_contents($arquivo, $content);
-        // Exibe o conteúdo recém-criado.
+    if ($mode === 'return') return;
+
+    // 2. SE FOR CREATE E O CONTEÚDO JÁ VEIO PRONTO (Seu caso na função html)
+    if ($mode === 'create' && $content !== null) {
+        file_put_contents($arquivo, $content, LOCK_EX);
+        header("Content-Type: text/html; charset=UTF-8");
+        header("X-Cache: MISS-STORED");
         echo $content;
+        exit;
     }
 }

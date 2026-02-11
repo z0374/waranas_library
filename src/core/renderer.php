@@ -1,67 +1,64 @@
 <?php
-
 function html($tempo = 'real-time') {
-    global $lang, $head, $fonts, $style, $styleVar, $styleLink, $SVG, $body, $header, $main, $footer, $script, $mobile, $title, $favicon, $script_files, $css_files; // Adiciona $css_files
+    global $lang, $head, $fonts, $style, $styleVar, $styleLink, $SVG, $body, $header, $main, $footer, $script, $mobile, $title, $favicon, $script_files, $css_files;
 
     $lang = !empty($lang) ? $lang : 'pt-br';
+    $cacheTitle = isset($title[0]) ? $title[0] : 'index';
 
-    // 1. Normaliza a URL (garante que é string, já que você usava implode)
-$favUrl = is_array($favicon) ? implode('', $favicon) : $favicon;
+    // 1. TENTATIVA DE CACHE PRECOCE (Antes de processar loops pesados)
+    if ($tempo === 'cache') {
+        // Se o arquivo existir e for válido, cachePage dará exit() aqui.
+        cachePage($cacheTitle, null, 'return');
+    }
 
-// 2. Extrai a extensão do arquivo (ignorando parâmetros como ?v=1)
-$path = parse_url($favUrl, PHP_URL_PATH);
-$ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+    // 2. PROCESSAMENTO DO FAVICON
+    $favUrl = is_array($favicon) ? implode('', $favicon) : $favicon;
+    $path = parse_url($favUrl, PHP_URL_PATH);
+    $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
-// 3. Define o MIME Type correto baseado na extensão
-$mimeType = match ($ext) {
-    'svg' => 'image/svg+xml',
-    'ico' => 'image/x-icon',
-    'png' => 'image/png',
-    'gif' => 'image/gif',
-    'jpg', 'jpeg' => 'image/jpeg',
-    default => 'image/svg+xml' // Fallback padrão (ou deixe vazio se preferir)
-};
+    $mimeType = match ($ext) {
+        'svg' => 'image/svg+xml',
+        'ico' => 'image/x-icon',
+        'png' => 'image/png',
+        'gif' => 'image/gif',
+        'jpg', 'jpeg' => 'image/jpeg',
+        default => 'image/svg+xml'
+    };
 
-    $head[] = "<title>" . implode('', $title) . "</title>";
-    $head[] = "<link rel='icon' type='{$mimeType}' href='{$favUrl}'>";
+    // 3. MONTAGEM DO <head>
     $head[] = "<meta charset='utf-8'>";
     $head[] = "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
-    // --- Monta a string do <head> ---
+    $head[] = "<title>" . implode('', $title) . "</title>";
+    $head[] = "<link rel='icon' type='{$mimeType}' href='{$favUrl}'>";
+
+    // 4. PROCESSAMENTO DE CSS (Injeção Crítica)
+    // Lemos os arquivos físicos apenas se o cache não foi servido acima
+    $css_inline = "";
+    if (!empty($css_files)) {
+        foreach ($css_files as $file) {
+            if (file_exists($file)) {
+                $css_inline .= file_get_contents($file);
+            }
+        }
+    }
+
     $head_html = "<head>" . implode('', $head);
 
-    // 1. Carrega o CSS global
-    for($i = count($css_files); $i > 0 ; $i--){
-        $css_files[$i-1] = file_get_contents($css_files[$i-1]);
-    }
-    
-    array_unshift($style, ...$css_files);
-
-    // 2. Carrega os arquivos CSS dos componentes (sob demanda)
-    /*$unique_css_files = array_unique($css_files);
-    foreach ($unique_css_files as $file) {
-        $head_html .= '<link rel="stylesheet" href="' . htmlspecialchars($file) . '">';
-    }*/
-
-    // 3. Carrega o styleLink customizado, se houver
+    // Estilos Externos
     if (!empty($styleLink[0])) {
          $head_html .= "<link rel='stylesheet' href='" . htmlspecialchars($styleLink[0]) . "'>";
     }
 
-    // 4. Injeta os estilos dinâmicos e de fontes na tag <style>
+    // Estilos Internos Otimizados
     $head_html .= "<style>
-        :root {"
-        . implode('', $styleVar)
-        . "}"
-        . implode('', $fonts)
-        . implode('', $style) .
-        "@media(max-width:900px){" . implode('', $mobile) . "}
-    </style>";
+        :root {" . implode('', $styleVar) . "}
+        " . implode('', $fonts) . "
+        " . $css_inline . "
+        " . implode('', $style) . "
+        @media(max-width:900px){" . implode('', $mobile) . "}
+    </style></head>";
 
-    $head_html .= "</head>";
-    // --- Fim da montagem do <head> ---
-
-
-    // --- Monta o restante do documento ---
+    // 5. MONTAGEM DO <body>
     $body_html = "<body>
         " . ($SVG ?? '') . "
         <header>" . implode('', $header) . "</header>
@@ -69,33 +66,34 @@ $mimeType = match ($ext) {
         <footer>" . implode('', $footer) . "</footer>"
         . implode('', $body);
 
-    // Adiciona os scripts JS (lógica inalterada da etapa anterior)
-    
-    for($i = 0; $i < count($script_files); $i++){
-            $script_files[$i] = file_get_contents($script_files[$i]);
+    // 6. PROCESSAMENTO DE SCRIPTS
+    $js_inline = "";
+    if (!empty($script_files)) {
+        foreach ($script_files as $s_file) {
+            if (file_exists($s_file)) {
+                $js_inline .= file_get_contents($s_file);
+            }
         }
-    
-    array_unshift($script, ...$script_files);
+    }
 
-    if (!empty($script)) {
-        $body_html .= '<script>' . implode('', $script) . '</script>';
+    if (!empty($js_inline) || !empty($script)) {
+        $body_html .= '<script>' . $js_inline . implode('', $script) . '</script>';
     }
     $body_html .= "</body>";
-    // --- Fim da montagem do body ---
 
+    // 7. RESULTADO FINAL
+    $final_html = "<!DOCTYPE html>\n<html lang=\"" . htmlspecialchars($lang) . "\">\n" . $head_html . $body_html . "\n</html>";
 
-    // --- Combina tudo ---
-    $final_html = '<!DOCTYPE html><html lang="' . htmlspecialchars($lang) . '">' . $head_html . $body_html . '</html>';
-
-
-    // Lógica de cache e exibição
+    // 8. ENTREGA E ARMAZENAMENTO
     switch ($tempo) {
         case "cache":
-            $cacheTitle = isset($title[0]) ? normalize($title[0]) : 'cache-' . time();
-            cachePage($cacheTitle, $final_html, 'create', false);
+            // Cria o cache e exibe (com exit interno)
+            cachePage($cacheTitle, $final_html, 'create');
             break;
         case "real-time":
         default:
+            header("Content-Type: text/html; charset=UTF-8");
+            header("X-Cache: BYPASS");
             echo $final_html;
             break;
     }
