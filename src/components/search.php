@@ -12,7 +12,7 @@ function search($tm, $lnksData, $htmlResult) {
         $script_files[] = $component_script;
     }
 
-    $jsonData = json_encode($lnksData);
+    $jsonData = json_encode($lnksData, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
     $script[] = 'const jsonData=' . $jsonData . '; const data =JSON.parse(JSON.stringify(jsonData));';
 
     // Estilos dinâmicos
