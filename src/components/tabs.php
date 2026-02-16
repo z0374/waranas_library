@@ -1,6 +1,6 @@
 <?php
 function tabs($array, $bg) {
-    global $style, $mobile;
+    global $style, $media_mobileP, $media_desktopL;
     $tabs = [];
     $content = [];
     $check = [];
@@ -16,7 +16,7 @@ function tabs($array, $bg) {
     else {
         for ($i = 0; $i < $length; $i++) {
             $tabs[] = "<label for='tab{$i}'>{$array[$i]['title']}</label>";
-            $content[] = "<input class='tabsBt' name='tabs' type='radio' id='tab{$i}' " . ($i == 0 ? 'checked' : '') . "><div class='content' id='cnt{$i}'><p>{$array[$i]['content']}</p></div>";
+            $content[] = "<input class='tabsBt' name='tabs' type='radio' id='tab{$i}' " . ($i == 0 ? 'checked' : '') . "><div class='content' id='cnt{$i}'>{$array[$i]['content']}</div>";
             
             $check[] = "input#tab{$i}:checked ~ #cnt{$i}";
 
@@ -35,7 +35,7 @@ function tabs($array, $bg) {
             position: relative; background: {$bg}; 
             border-radius:0.9rem 0.9rem 0 0;
         }
-        .labelsTab label { 
+        .tabs .labelsTab label { 
             padding:6%; font-size:1.2rem; font-weight:bold; 
             text-align:center; cursor:pointer;
             transition: opacity 0.3s; z-index: 2; 
@@ -57,7 +57,9 @@ function tabs($array, $bg) {
         " . implode(', ', $check) . "{ display:block; }
     ";
     
-    $mobile[] = ".tabs .content{font-size:1rem;}";
+    $media_mobileP[] = ".tabs .content{font-size:1rem;}";
+
+    $media_desktopL[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/desktopL/tabs.css");
 
     return "
     <div class='tabs'>

@@ -6,12 +6,13 @@
     filter: drop-shadow(0px 0px 3px rgba(60,60,60,0.6));
     border-radius: calc(var(--textBlock-tm)*0.03vw);
     background: var(--textBlock-bg);
+    padding: 1.2rem;
 }
 
 .textblock p {
     width: 100%;
     height: auto;
     text-align: justify;
-    font-size: 90%;
+    font-size: calc(var(--textBlock-tm) * 1rem);
     font-weight: bolder;
 }

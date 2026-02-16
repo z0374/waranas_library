@@ -1,57 +1,99 @@
-/* Estilos estáticos para o componente slideshow */
+/* Estrutura Geral do Container */
 .slideshow {
+    width: calc(var(--slideshow-tm) * 2cqw);
+    height: calc(var(--slideshow-tm) * 1cqw);
+    border-radius: calc((var(--slideshow-tm) * 1rem) / 9);
     position: relative;
-    border: solid 0.03vh black;
     overflow: hidden;
+    background: #000;
 }
 
+/* Container de Itens com Scroll Nativo */
 .items_slideshow {
+    display: flex;
+    flex-wrap: nowrap;
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: flex-start;
-    overflow: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
+    overflow-x: auto;
+    scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
-    transition: transform 0.9s ease;
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;    /* IE/Edge */
 }
 
 .items_slideshow::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, and Opera */
+    display: none;               /* Chrome/Safari */
 }
 
-.item {
-    min-width: 100%;
+/* Wrapper do Slide Individual */
+.slide-wrapper {
+    flex: 0 0 100%;
+    width: 100%;
     height: 100%;
-    scroll-snap-align: center;
-    cursor: default;
+    position: relative;
+    scroll-snap-align: start;
 }
 
-.item:hover {
+/* Link e Efeitos de Camada (Blur + Imagem) */
+.slide-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+/* Camada Blur (Fundo) */
+.slide-link::before {
+    content: '';
+    position: absolute;
+    top: -10%; left: -10%; width: 120%; height: 120%;
+    background-image: var(--bg-slide);
+    background-size: 210%;
+    background-position: center;
+    filter: blur(15px) brightness(0.8);
+    z-index: 1;
+}
+
+/* Camada Imagem Nítida (Frente) */
+.slide-link::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: var(--bg-slide);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 2;
+}
+
+/* Botões de Navegação */
+.slideshow .nav-bt {
+    width: 12%; 
+    height: 100%;
+    font-size: 2rem;
+    position: absolute; 
+    top: 0; 
+    z-index: 10;
+    border: none; 
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    opacity: 0;
+}
+
+.slideshow:hover .nav-bt {
     opacity: 1;
 }
 
-.slideshow #bt {
-    position: absolute;
+/* Gradientes específicos para cada lado */
+.nav-bt-prev {
+    left: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.4), transparent);
+}
+
+.nav-bt-next {
     right: 0;
-    top: 0;
-    height: 100%;
-    z-index: 10;
-    text-align: center;
-    opacity: 0;
-    background-color: rgba(0, 0, 0, 0.06);
-    border: none;
-    cursor: pointer;
-    color: white;
-    font-size: 2rem;
-}
-
-.slideshow:hover #bt {
-    opacity: 0.5;
-    transition: opacity 0.3s;
-}
-
-.slideshow #bt:hover {
-    opacity: 0.8;
+    background: linear-gradient(to left, rgba(0,0,0,0.4), transparent);
 }
