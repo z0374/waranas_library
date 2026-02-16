@@ -17,6 +17,10 @@ $lang = 'pt-br';
 $style = [];
 $styleVar = [];
 $mobile = [];
+$media_mobileP = [];
+$media_mobileL = [];
+$media_desktopP = [];
+$media_desktopL = [];
 $script = [];
 
 // Arrays para rastrear os arquivos externos necessários

@@ -1,6 +1,6 @@
 <?php
 function html($tempo = 'real-time') {
-    global $lang, $head, $fonts, $style, $styleVar, $styleLink, $SVG, $body, $header, $main, $footer, $script, $mobile, $title, $favicon, $script_files, $css_files;
+    global $lang, $head, $fonts, $style, $styleVar, $styleLink, $media_mobileP, $media_mobileL, $media_desktopP, $media_desktopL, $SVG, $body, $header, $main, $footer, $script, $title, $favicon, $script_files, $css_files;
 
     $lang = !empty($lang) ? $lang : 'pt-br';
     $cacheTitle = isset($title[0]) ? $title[0] : 'index';
@@ -55,7 +55,10 @@ function html($tempo = 'real-time') {
         " . implode('', $fonts) . "
         " . $css_inline . "
         " . implode('', $style) . "
-        @media(max-width:900px){" . implode('', $mobile) . "}
+        @media screen and (max-width: 920px) and (orientation: portrait) {" . implode('', $media_mobileP) . "}
+        @media screen and (max-width: 920px) and (orientation: landscape) {" . implode('', $media_mobileL) . "}
+        @media screen and (min-width: 920px) and (orientation: portrait) {" . implode('', $media_desktopP) . "}
+        @media screen and (min-width: 920px) and (orientation: landscape) {" . implode('', $media_desktopL) . "}
     </style></head>";
 
     // 5. MONTAGEM DO <body>
