@@ -1,0 +1,4 @@
+.slideshow {
+    width: calc(var(--slideshow-tm) * 7.2cqw);
+    height: calc(var(--slideshow-tm) * 3.6cqw);
+}

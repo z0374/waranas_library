@@ -2,7 +2,7 @@
 
 function slideshow($id, $array, $tm, $auto)
 {
-    global $styleVar, $style, $media_mobileP, $script, $fscript, $mobile, $css_files, $script_files;
+    global $styleVar, $style, $media_mobileP, $script, $fscript, $mobile, $css_files, $script_files, $media_mobileL;
 
     // Inclusão de bibliotecas (mantendo seu padrão)
     $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/slideshow.css';
@@ -27,6 +27,7 @@ function slideshow($id, $array, $tm, $auto)
 ";
 
     $media_mobileP[] = "#d{$id} { width: 90vw; height: 50vw; }";
+    $media_mobileL[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/mobileL/slideshow.css");
 
     for ($i = 0; $i < $length; $i++) {
         $img = $array[$i]['image'];

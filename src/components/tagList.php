@@ -1,6 +1,6 @@
 <?php
 function tagList($id, $array, $tm) {
-    global $styleVar, $style, $media_mobileP, $media_desktopL;
+    global $styleVar, $style, $media_mobileP, $media_mobileL, $media_desktopL;
     $tag = [];
     $length = count($array);
 
@@ -11,6 +11,7 @@ function tagList($id, $array, $tm) {
     $style[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/tagList.css");
     
     $media_desktopL[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/desktopL/tagList.css");
+    $media_mobileL[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/mobileL/tagList.css");
     $media_mobileP[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/mobileP/tagList.css");
     
     for ($i = 0; $i < $length; $i++) {
