@@ -1,6 +1,6 @@
 <?php
 function tabs($array, $bg) {
-    global $style, $media_mobileP, $media_desktopL;
+    global $style, $media_mobile_portrait_geral, $media_desktop_landscape_geral;
     $tabs = [];
     $content = [];
     $check = [];
@@ -57,9 +57,9 @@ function tabs($array, $bg) {
         " . implode(', ', $check) . "{ display:block; }
     ";
     
-    $media_mobileP[] = ".tabs .content{font-size:1rem;}";
+    $media_mobile_portrait_geral[] = ".tabs .content{font-size:1rem;}";
 
-    $media_desktopL[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/desktopL/tabs.css");
+    $media_desktop_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/desktopL/tabs.css");
 
     return "
     <div class='tabs'>

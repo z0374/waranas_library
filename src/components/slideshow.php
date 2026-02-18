@@ -2,7 +2,7 @@
 
 function slideshow($id, $array, $tm, $auto)
 {
-    global $styleVar, $style, $media_mobileP, $script, $fscript, $mobile, $css_files, $script_files, $media_mobileL;
+    global $styleVar, $style, $script, $fscript, $mobile, $css_files, $script_files, $media_mobile_portrait_geral, $media_mobile_landscape_geral, $media_tablet_landscape_geral, $media_tablet_portrait_geral;
 
     // Inclusão de bibliotecas (mantendo seu padrão)
     $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/slideshow.css';
@@ -26,8 +26,11 @@ function slideshow($id, $array, $tm, $auto)
     #next{$id} { right: 0; }
 ";
 
-    $media_mobileP[] = "#d{$id} { width: 90vw; height: 50vw; }";
-    $media_mobileL[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/mobileL/slideshow.css");
+    $media_mobile_portrait_geral[] = "#d{$id} { width: 90vw; height: 50vw; }";
+    $media_mobile_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/mobileL/slideshow.css");
+
+    $media_tablet_portrait_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/tabletP/slideshow.css");
+    $media_tablet_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/tabletL/slideshow.css");
 
     for ($i = 0; $i < $length; $i++) {
         $img = $array[$i]['image'];

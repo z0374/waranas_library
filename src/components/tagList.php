@@ -1,6 +1,6 @@
 <?php
 function tagList($id, $array, $tm) {
-    global $styleVar, $style, $media_mobileP, $media_mobileL, $media_desktopL;
+    global $styleVar, $style, $media_mobile_portrait_geral, $media_mobile_landscape_geral, $media_desktop_landscape_geral, $media_tablet_portrait_geral, $media_tablet_landscape_geral;
     $tag = [];
     $length = count($array);
 
@@ -10,9 +10,13 @@ function tagList($id, $array, $tm) {
         }
     $style[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/tagList.css");
     
-    $media_desktopL[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/desktopL/tagList.css");
-    $media_mobileL[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/mobileL/tagList.css");
-    $media_mobileP[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/mobileP/tagList.css");
+    $media_desktop_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/desktopL/tagList.css");
+
+    $media_mobile_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/mobileL/tagList.css");
+    $media_mobile_portrait_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/mobileP/tagList.css");
+    
+    $media_tablet_portrait_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/tabletP/tagList.css");
+    $media_tablet_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/tabletL/tagList.css");
     
     for ($i = 0; $i < $length; $i++) {
         $imgUrl = $array[$i]['image'];

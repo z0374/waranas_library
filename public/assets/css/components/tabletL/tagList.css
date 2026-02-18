@@ -1,0 +1,18 @@
+.tag-section {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100%;
+    padding: 6% 0;
+}
+
+.tag-link {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+}
+
+.tag-section p {
+    width: 100%;
+    min-height: fit-content;
+    font-size: 1.2rem;
+    padding: 3% 0;
+}

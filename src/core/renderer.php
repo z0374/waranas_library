@@ -1,6 +1,7 @@
 <?php
-function html($tempo = 'real-time') {
-    global $lang, $head, $fonts, $style, $styleVar, $styleLink, $media_mobileP, $media_mobileL, $media_desktopP, $media_desktopL, $SVG, $body, $header, $main, $footer, $script, $title, $favicon, $script_files, $css_files;
+function html($tempo = 'real-time')
+{
+    global $lang, $head, $fonts, $style, $styleVar, $styleLink, $media_mobile_portrait_geral, $media_mobile_landscape_geral, $media_tablet_portrait_geral, $media_tablet_landscape_geral, $media_desktop_portrait_geral, $media_desktop_landscape_geral, $media_xs_portrait, $media_xs_landscape, $media_sm_portrait, $media_sm_landscape, $media_md_portrait, $media_md_landscape, $media_lg_portrait, $media_lg_landscape, $media_xl_portrait, $media_xl_landscape, $media_2xl_portrait, $media_2xl_landscape, $SVG, $body, $header, $main, $footer, $script, $title, $favicon, $script_files, $css_files;
 
     $lang = !empty($lang) ? $lang : 'pt-br';
     $cacheTitle = isset($title[0]) ? $title[0] : 'index';
@@ -46,7 +47,7 @@ function html($tempo = 'real-time') {
 
     // Estilos Externos
     if (!empty($styleLink[0])) {
-         $head_html .= "<link rel='stylesheet' href='" . htmlspecialchars($styleLink[0]) . "'>";
+        $head_html .= "<link rel='stylesheet' href='" . htmlspecialchars($styleLink[0]) . "'>";
     }
 
     // Estilos Internos Otimizados
@@ -55,10 +56,60 @@ function html($tempo = 'real-time') {
         " . implode('', $fonts) . "
         " . $css_inline . "
         " . implode('', $style) . "
-        @media screen and (max-width: 920px) and (orientation: portrait) {" . implode('', $media_mobileP) . "}
-        @media screen and (max-width: 920px) and (orientation: landscape) {" . implode('', $media_mobileL) . "}
-        @media screen and (min-width: 920px) and (orientation: portrait) {" . implode('', $media_desktopP) . "}
-        @media screen and (min-width: 920px) and (orientation: landscape) {" . implode('', $media_desktopL) . "}
+
+        /* ============================================================
+           I. INTERMEDIÁRIO MOBILE (XS + SM) - Até 767px
+           ============================================================ */
+        @media screen and (max-width: 767px) {
+            @media (orientation: portrait)  { " . implode('', $media_mobile_portrait_geral) . " }
+            @media (orientation: landscape) { " . implode('', $media_mobile_landscape_geral) . " }
+
+            /* Específicos */
+            @media screen and (max-width: 575px) {
+                @media (orientation: portrait)  { " . implode('', $media_xs_portrait) . " }
+                @media (orientation: landscape) { " . implode('', $media_xs_landscape) . " }
+            }
+            @media screen and (min-width: 576px) {
+                @media (orientation: portrait)  { " . implode('', $media_sm_portrait) . " }
+                @media (orientation: landscape) { " . implode('', $media_sm_landscape) . " }
+            }
+        }
+
+        /* ============================================================
+           II. INTERMEDIÁRIO TABLET (MD + LG) - 768px até 1199px
+           ============================================================ */
+        @media screen and (min-width: 768px) and (max-width: 1199px) {
+            @media (orientation: portrait)  { " . implode('', $media_tablet_portrait_geral) . " }
+            @media (orientation: landscape) { " . implode('', $media_tablet_landscape_geral) . " }
+
+            /* Específicos */
+            @media screen and (max-width: 991px) {
+                @media (orientation: portrait)  { " . implode('', $media_md_portrait) . " }
+                @media (orientation: landscape) { " . implode('', $media_md_landscape) . " }
+            }
+            @media screen and (min-width: 992px) {
+                @media (orientation: portrait)  { " . implode('', $media_lg_portrait) . " }
+                @media (orientation: landscape) { " . implode('', $media_lg_landscape) . " }
+            }
+        }
+
+        /* ============================================================
+           III. INTERMEDIÁRIO DESKTOP (XL + 2XL) - A partir de 1200px
+           ============================================================ */
+        @media screen and (min-width: 1200px) {
+            @media (orientation: portrait)  { " . implode('', $media_desktop_portrait_geral) . " }
+            @media (orientation: landscape) { " . implode('', $media_desktop_landscape_geral) . " }
+
+            /* Específicos */
+            @media screen and (max-width: 1399px) {
+                @media (orientation: portrait)  { " . implode('', $media_xl_portrait) . " }
+                @media (orientation: landscape) { " . implode('', $media_xl_landscape) . " }
+            }
+            @media screen and (min-width: 1400px) {
+                @media (orientation: portrait)  { " . implode('', $media_2xl_portrait) . " }
+                @media (orientation: landscape) { " . implode('', $media_2xl_landscape) . " }
+            }
+        }
     </style></head>";
 
     // 5. MONTAGEM DO <body>
