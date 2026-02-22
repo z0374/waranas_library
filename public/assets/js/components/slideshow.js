@@ -1,29 +1,30 @@
 /**
- * Lógica de Deslize Lateral Suave com Reinício Automático
+ * Move o slide usando Transform Translate para efeito Ease
  */
-function slideshow(step, total, elementId, dir) {
-    const container = document.getElementById(elementId);
-    if (!container) return;
+function slideshow(elementId, dir) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
 
-    // Obtém a posição atual (arredondada para evitar falhas de subpixel no Linux/Browser)
-    const currentPos = Math.round(container.scrollLeft);
-    const maxScroll = Math.round(step * (total - 1));
-    
-    // Calcula o próximo destino
-    let targetPos = currentPos + (step * dir);
+    const slides = el.querySelectorAll('.slide-wrapper');
+    const totalSlides = slides.length;
 
-    // Lógica de Reinício (Loop)
-    if (targetPos > maxScroll) {
-        // Se ultrapassar o último slide, volta para o primeiro (0)
-        targetPos = 0;
-    } else if (targetPos < 0) {
-        // Se tentar voltar antes do primeiro, vai para o último
-        targetPos = maxScroll;
+    // Recupera ou define o índice atual usando um atributo de dados no elemento
+    let currentIndex = parseInt(el.getAttribute('data-index') || '0');
+
+    // Calcula o próximo índice
+    currentIndex += dir;
+
+    // Lógica de Loop Infinito
+    if (currentIndex >= totalSlides) {
+        currentIndex = 0;
+    } else if (currentIndex < 0) {
+        currentIndex = totalSlides - 1;
     }
 
-    // Move suavemente para a posição calculada
-    container.scrollTo({
-        left: targetPos,
-        behavior: 'smooth'
-    });
+    // Salva o novo índice
+    el.setAttribute('data-index', currentIndex);
+
+    // Aplica o movimento de deslize (100% por slide)
+    const offset = currentIndex * -100;
+    el.style.transform = `translateX(${offset}%)`;
 }

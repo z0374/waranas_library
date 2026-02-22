@@ -1,40 +1,50 @@
-/* Estrutura Geral do Container */
+/* Slideshow Component - Transform Ease Version
+*/
+
 .slideshow {
+    /* Essencial para que a unidade 'cqw' funcione */
+    container-type: inline-size; 
+    position: relative;
+    overflow: hidden; /* Moldura que esconde os slides fora de foco */
     width: calc(var(--slideshow-tm) * 2cqw);
     height: calc(var(--slideshow-tm) * 1cqw);
-    border-radius: calc((var(--slideshow-tm) * 1rem) / 9);
-    position: relative;
-    overflow: hidden;
     background: #000;
+    border-radius: calc(var(--slideshow-tm) * 0.06cqw); /* Arredondamento dinâmico */
 }
 
-/* Container de Itens com Scroll Nativo */
+/* O "Trilho" que desliza lateralmente */
 .items_slideshow {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* Garante que os slides fiquem lado a lado */
     width: 100%;
     height: 100%;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;       /* Firefox */
-    -ms-overflow-style: none;    /* IE/Edge */
+    margin: 0;
+    padding: 0;
+    
+    /* Suavidade do movimento (Ease) */
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform; /* Otimização de performance para GPU */
+    
+    /* Removemos o overflow-x: auto pois agora usamos transform */
+    overflow: visible; 
 }
 
+/* Esconde scrollbars caso apareçam por erro de renderização */
 .items_slideshow::-webkit-scrollbar {
-    display: none;               /* Chrome/Safari */
+    display: none;
 }
 
 /* Wrapper do Slide Individual */
 .slide-wrapper {
-    flex: 0 0 100%;
+    /* flex: grow(0) shrink(0) basis(100%) */
+    flex: 0 0 100%; 
     width: 100%;
     height: 100%;
     position: relative;
-    scroll-snap-align: start;
+    box-sizing: border-box;
 }
 
-/* Link e Efeitos de Camada (Blur + Imagem) */
+/* Link e Estrutura Interna */
 .slide-link {
     display: block;
     width: 100%;
@@ -42,25 +52,44 @@
     position: relative;
     overflow: hidden;
     text-decoration: none;
+    background-color: #000;
 }
 
+/* --- Renderização de Mídia (Tags img, video, iframe) --- */
+.slide-link img, 
+.slide-link video, 
+.slide-link iframe,
+.slide-link embed {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garante que a mídia preencha o espaço sem deformar */
+    display: block;
+    border: none;
+    position: relative;
+    z-index: 5;
+}
+
+/* --- Renderização "Default" (Apenas para o modo com Background CSS) --- */
+
 /* Camada Blur (Fundo) */
-.slide-link::before {
+.slide-link[style*='--bg-slide']::before {
     content: '';
     position: absolute;
-    top: -10%; left: -10%; width: 120%; height: 120%;
+    top: -10%; left: -10%; 
+    width: 120%; height: 120%;
     background-image: var(--bg-slide);
-    background-size: 210%;
+    background-size: cover;
     background-position: center;
-    filter: blur(15px) brightness(0.8);
+    filter: blur(15px) brightness(0.6);
     z-index: 1;
 }
 
 /* Camada Imagem Nítida (Frente) */
-.slide-link::after {
+.slide-link[style*='--bg-slide']::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0; left: 0; 
+    width: 100%; height: 100%;
     background-image: var(--bg-slide);
     background-size: contain;
     background-repeat: no-repeat;
@@ -68,32 +97,41 @@
     z-index: 2;
 }
 
-/* Botões de Navegação */
+/* --- Navegação --- */
+
 .slideshow .nav-bt {
     width: 12%; 
     height: 100%;
-    font-size: 2rem;
+    font-size: 2.5rem;
     position: absolute; 
     top: 0; 
-    z-index: 10;
+    z-index: 20; /* Fica acima de tudo */
     border: none; 
     color: #fff;
     cursor: pointer;
-    transition: opacity 0.3s;
+    transition: all 0.3s ease;
     opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    outline: none;
 }
 
 .slideshow:hover .nav-bt {
     opacity: 1;
 }
 
-/* Gradientes específicos para cada lado */
+.nav-bt:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
 .nav-bt-prev {
     left: 0;
-    background: linear-gradient(to right, rgba(0,0,0,0.4), transparent);
+    background: linear-gradient(to right, rgba(0,0,0,0.6), transparent);
 }
 
 .nav-bt-next {
     right: 0;
-    background: linear-gradient(to left, rgba(0,0,0,0.4), transparent);
+    background: linear-gradient(to left, rgba(0,0,0,0.6), transparent);
 }

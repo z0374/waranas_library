@@ -1,7 +1,7 @@
 <?php
 function html($tempo = 'real-time')
 {
-    global $lang, $head, $fonts, $style, $styleVar, $styleLink, $media_mobile_portrait_geral, $media_mobile_landscape_geral, $media_tablet_portrait_geral, $media_tablet_landscape_geral, $media_desktop_portrait_geral, $media_desktop_landscape_geral, $media_xs_portrait, $media_xs_landscape, $media_sm_portrait, $media_sm_landscape, $media_md_portrait, $media_md_landscape, $media_lg_portrait, $media_lg_landscape, $media_xl_portrait, $media_xl_landscape, $media_2xl_portrait, $media_2xl_landscape, $SVG, $body, $header, $main, $footer, $script, $title, $favicon, $script_files, $css_files;
+    global $lang, $head, $fonts, $style, $styleVar, $styleLink, $media_mobile_portrait_geral, $media_mobile_landscape_geral, $media_tablet_portrait_geral, $media_tablet_landscape_geral, $media_desktop_portrait_geral, $media_desktop_landscape_geral, $media_xs_portrait, $media_xs_landscape, $media_sm_portrait, $media_sm_landscape, $media_md_portrait, $media_md_landscape, $media_lg_portrait, $media_lg_landscape, $media_xl_portrait, $media_xl_landscape, $media_2xl_portrait, $media_2xl_landscape, $SVG, $iframesheet, $body, $header, $main, $footer, $script, $title, $favicon, $script_files, $css_files;
 
     $lang = !empty($lang) ? $lang : 'pt-br';
     $cacheTitle = isset($title[0]) ? $title[0] : 'index';
@@ -112,6 +112,9 @@ function html($tempo = 'real-time')
         }
     </style></head>";
 
+    if (!empty($iframesheet) && function_exists('hubIframesheet')) {
+        $body[] = hubIframesheet(); 
+    }
     // 5. MONTAGEM DO <body>
     $body_html = "<body>
         " . ($SVG ?? '') . "
@@ -133,6 +136,7 @@ function html($tempo = 'real-time')
     if (!empty($js_inline) || !empty($script)) {
         $body_html .= '<script>' . $js_inline . implode('', $script) . '</script>';
     }
+
     $body_html .= "</body>";
 
     // 7. RESULTADO FINAL
