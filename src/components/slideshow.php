@@ -19,18 +19,18 @@ function slideshow($id, $array, $tm, $auto, $element = 'default')
     $items = [];
     $length = count($array);
     
-    // CSS Dinâmico (Arredondamento baseado no tm)
+    // CSS Dinâmico
     $style[] = "#d{$id} { border-radius: calc({$tm}cqw * 0.06); }";
 
     for ($i = 0; $i < $length; $i++) {
-        $source = $array[$i]['media'];
+        $source = $array[$i]['src'];
         $url = $array[$i]['url'];
         $innerContent = '';
         $anchorAttributes = "class='slide-link' target='_blank'";
 
         switch ($element) {
             case 'image':
-                $innerContent = "<img src='{$source}' style='width:100%; height:100%; object-fit:cover;' loading='lazy'>";
+                $innerContent = "<img src='{$source}' style='width:100%; height:100%; object-fit:contain;' loading='lazy'>";
                 break;
             case 'video':
                 $innerContent = "<video src='{$source}' autoplay muted loop playsinline style='width:100%; height:100%; object-fit:cover;'></video>";
@@ -38,12 +38,17 @@ function slideshow($id, $array, $tm, $auto, $element = 'default')
             case 'audio':
                 $innerContent = "<audio src='{$source}' controls style='width:100%;'></audio>";
                 break;
+            
+            // --- INTEGRAÇÃO COM IFRAMESHEET ---
             case 'iframe':
-                $innerContent = "<iframe src='{$source}' frameborder='0' allowfullscreen loading='lazy' class='slide-link'></iframe>";
-                break;
             case 'embed':
-                $innerContent = "<embed src='{$source}' style='width:100%; height:100%;'>";
+                $uniqueId = "slide_ifrm_{$id}_{$i}";
+                // Registra no cofre e retorna o placeholder configurado
+                // O quarto parâmetro '' pode ser usado para passar classes customizadas futuramente
+                $innerContent = setIframesheet($uniqueId, $source, $element, 'slide-iframe-content');
                 break;
+            // ----------------------------------
+
             case 'default':
             default:
                 $anchorAttributes .= " style='--bg-slide: url(\"{$source}\");'";
@@ -57,7 +62,7 @@ function slideshow($id, $array, $tm, $auto, $element = 'default')
             </div>";
     }
 
-    // Função local para chamar a global
+    // Função JS para controle de navegação
     $script[] = "
     function moveSlide{$id}(dir) {
         if (typeof slideshow === 'function') {
@@ -70,8 +75,6 @@ function slideshow($id, $array, $tm, $auto, $element = 'default')
         $script[] = "setInterval(() => moveSlide{$id}(1), {$auto} * 1000);";
     }
 
-    // Estrutura HTML
-    // IMPORTANTE: Adicionado o data-index='0'
     return "
         <div class='slideshow' id='d{$id}'>
             <button id='prev{$id}' class='nav-bt nav-bt-prev' onclick='moveSlide{$id}(-1)'> &#10094; </button>

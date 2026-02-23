@@ -24,6 +24,10 @@
     overflow: hidden;
     background-color: transparent;
     text-decoration: none;
+    z-index: 1;
+}
+.tag-link iframe{
+    z-index: 3;
 }
 
 /* Camada 1: O fundo borrado */

@@ -1,90 +1,88 @@
-/* Slideshow Component - Transform Ease Version
-*/
+/* Slideshow Component - Infinite Loop & Iframesheet Version */
 
 .slideshow {
     /* Essencial para que a unidade 'cqw' funcione */
     container-type: inline-size; 
     position: relative;
-    overflow: hidden; /* Moldura que esconde os slides fora de foco */
+    overflow: hidden; /* Esconde slides fora da moldura */
     width: calc(var(--slideshow-tm) * 2cqw);
     height: calc(var(--slideshow-tm) * 1cqw);
-    background: #000;
-    border-radius: calc(var(--slideshow-tm) * 0.06cqw); /* Arredondamento dinâmico */
+    border: solid 0.06rem black;
+    border-radius: calc(var(--slideshow-tm) * 0.06cqw);
+    background-color: #c3c3c333; /* Evita flash branco entre transições */
 }
 
-/* O "Trilho" que desliza lateralmente */
+/* O "Trilho" - Ajustado para Loop Infinito Linear */
 .items_slideshow {
     display: flex;
-    flex-wrap: nowrap; /* Garante que os slides fiquem lado a lado */
+    flex-direction: row;
+    flex-wrap: nowrap; /* CRÍTICO: Impede que o conteúdo venha de baixo */
+    align-items: stretch;
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
     
-    /* Suavidade do movimento (Ease) */
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform; /* Otimização de performance para GPU */
-    
-    /* Removemos o overflow-x: auto pois agora usamos transform */
+    /* Suavidade do movimento controlada pelo JS */
+    transition: transform 0.5s ease-in-out;
+    will-change: transform;
     overflow: visible; 
 }
 
-/* Esconde scrollbars caso apareçam por erro de renderização */
+/* Esconde scrollbars */
 .items_slideshow::-webkit-scrollbar {
     display: none;
 }
 
-/* Wrapper do Slide Individual */
+/* Wrapper do Slide - Força ocupação total sem deformar o trilho */
 .slide-wrapper {
-    /* flex: grow(0) shrink(0) basis(100%) */
-    flex: 0 0 100%; 
+    flex: 0 0 100%; /* Grow: 0, Shrink: 0, Basis: 100% */
     width: 100%;
     height: 100%;
     position: relative;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
-/* Link e Estrutura Interna */
-.slide-link {
+/* Estrutura de Link e Placeholders do Iframesheet */
+.slide-link, 
+.iframesheet-placeholder {
     display: block;
     width: 100%;
     height: 100%;
     position: relative;
     overflow: hidden;
     text-decoration: none;
-    background-color: #000;
 }
 
-/* --- Renderização de Mídia (Tags img, video, iframe) --- */
+/* Garantia para o conteúdo do Iframesheet e Mídias */
+.slide-iframe-content,
 .slide-link img, 
 .slide-link video, 
 .slide-link iframe,
 .slide-link embed {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Garante que a mídia preencha o espaço sem deformar */
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover; 
     display: block;
     border: none;
-    position: relative;
-    z-index: 5;
+    background-color: transparent;
 }
 
-/* --- Renderização "Default" (Apenas para o modo com Background CSS) --- */
+/* --- Renderização "Default" (Background CSS com Blur) --- */
 
-/* Camada Blur (Fundo) */
 .slide-link[style*='--bg-slide']::before {
     content: '';
     position: absolute;
-    top: -10%; left: -10%; 
-    width: 120%; height: 120%;
+    top: -5%; left: -5%; 
+    width: 110%; height: 110%;
     background-image: var(--bg-slide);
     background-size: cover;
     background-position: center;
-    filter: blur(15px) brightness(0.6);
+    filter: blur(15px) brightness(0.5);
     z-index: 1;
 }
 
-/* Camada Imagem Nítida (Frente) */
 .slide-link[style*='--bg-slide']::after {
     content: '';
     position: absolute;
@@ -97,25 +95,24 @@
     z-index: 2;
 }
 
-/* --- Navegação --- */
+/* --- Navegação (Botões) --- */
 
 .slideshow .nav-bt {
-    width: 12%; 
+    width: 10%; 
     height: 100%;
-    font-size: 2.5rem;
+    font-size: 2rem;
     position: absolute; 
     top: 0; 
-    z-index: 20; /* Fica acima de tudo */
+    z-index: 20;
     border: none; 
     color: #fff;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
     opacity: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: none;
-    outline: none;
+    background: transparent;
 }
 
 .slideshow:hover .nav-bt {
@@ -123,15 +120,15 @@
 }
 
 .nav-bt:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .nav-bt-prev {
     left: 0;
-    background: linear-gradient(to right, rgba(0,0,0,0.6), transparent);
+    background: linear-gradient(to right, rgba(0,0,0,0.5), transparent);
 }
 
 .nav-bt-next {
     right: 0;
-    background: linear-gradient(to left, rgba(0,0,0,0.6), transparent);
+    background: linear-gradient(to left, rgba(0,0,0,0.5), transparent);
 }
