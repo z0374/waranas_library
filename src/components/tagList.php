@@ -55,10 +55,7 @@ function tagList($id, $array, $tm, $element = 'default') {
                 
                 // Cria o placeholder que será preenchido pelo Blob na RAM
                 // Dentro do loop do tagList
-                $innerContent = setIframesheet("ifrm_{$id}_{$i}", $source, $element);
-                
-                // Injeta o comando JS para carregar o Blob neste placeholder
-                $script[] = "initIframesheet('{$uniqueId}', '{$ref}', '{$source}', '{$element}');";
+                $innerContent = setIframesheet("ifrm_{$id}_{$i}", $source, $element, "tag-link");
                 break;
 
             default:

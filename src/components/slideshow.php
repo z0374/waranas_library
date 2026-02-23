@@ -39,7 +39,7 @@ function slideshow($id, $array, $tm, $auto, $element = 'default')
                 $innerContent = "<audio src='{$source}' controls style='width:100%;'></audio>";
                 break;
             case 'iframe':
-                $innerContent = "<iframe src='{$source}' frameborder='0' allowfullscreen loading='lazy'></iframe>";
+                $innerContent = "<iframe src='{$source}' frameborder='0' allowfullscreen loading='lazy' class='slide-link'></iframe>";
                 break;
             case 'embed':
                 $innerContent = "<embed src='{$source}' style='width:100%; height:100%;'>";

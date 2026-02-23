@@ -1,21 +1,24 @@
 <?php
 /**
- * Cria o placeholder e registra a URL no sistema de memória.
+ * Regista o placeholder e prepara o transporte para a memória RAM.
+ * @param string $id    ID único do elemento.
+ * @param string $url   URL do recurso.
+ * @param string $type  Tipo ('iframe' ou 'embed').
+ * @param string $class Classe CSS opcional para o elemento final.
  */
-function setIframesheet($id, $url, $type = 'iframe') {
-    global $script, $script_files;
+function setIframesheet($id, $url, $type = 'iframe', $class = '') {
+    global $script, $script_files, $css_files;
 
-    // Garante o carregamento do JS
     $component_script = ROOT_PATH_WARANAS_LIB . '/public/assets/js/components/iframesheet.js';
     if (!in_array($component_script, $script_files)) {
         $script_files[] = $component_script;
     }
 
-    // Obtém a referência única (eblob_...)
     $ref = getIframesheetRef($url);
+    
+    $css_files[] = ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/iframeSheet.css";
+    // Passamos a classe como o quarto argumento para a função JS
+    $script[] = "initIframesheet('{$id}', '{$ref}', '{$url}', '{$type}', '{$class}');";
 
-    // Registra o comando JS para processar esta instância
-    $script[] = "initIframesheet('{$id}', '{$ref}', '{$url}', '{$type}');";
-
-    return "<div id='{$id}' class='iframesheet-placeholder'></div>";
+    return "<div id='{$id}' class='iframesheet-placeholder {$class}'></div>";
 }
