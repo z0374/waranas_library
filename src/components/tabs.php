@@ -28,12 +28,23 @@ function tabs($array, $bg) {
     }
 
     $style[] = "
-        .tabs { width:100%; display:grid; grid-template-columns:1fr; position:relative; 
-    overflow: visible;}
+        .tabs {
+            width:100%;
+            display:grid;
+            grid-template-rows:auto 1fr;
+            grid-template-columns:1fr;
+            position:relative; 
+            overflow: visible;
+        }
         .labelsTab { 
-            width:100%; display:grid; grid-auto-flow:column; grid-auto-columns: 1fr; 
+            width:100%;
+            height: fit-content;
+            display:grid;
+            grid-auto-flow:column;
+            grid-auto-columns: 1fr; 
             position: relative; background: {$bg}; 
             border-radius:0.9rem 0.9rem 0 0;
+            overflow: hidden;
         }
         .tabs .labelsTab label { 
             padding:6%; font-size:1.2rem; font-weight:bold; 
@@ -53,8 +64,16 @@ function tabs($array, $bg) {
         }
 
         .tabs .tabsBt { display:none; }
-        .tabs .content { display:none; padding:2.1vh; border:solid 1px {$bg}; text-align:justify; }
-        " . implode(', ', $check) . "{ display:block; }
+        .tabs .content {
+                    min-height: 100%;
+                    display:none;
+                    padding:2.1vh;
+                    border:solid 1px {$bg};
+                    text-align:justify;
+                }
+        " . implode(', ', $check) . "{
+                display:block; 
+            }
     ";
     
     $media_mobile_portrait_geral[] = ".tabs .content{font-size:1rem;}";

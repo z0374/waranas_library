@@ -1,5 +1,7 @@
 #listing {
     display: flex;
     flex-direction: column;
-    font-size: 120%;
+    font-size: 1cqh;
+    gap:1cqh;
+    overflow-x: auto !important;
 }

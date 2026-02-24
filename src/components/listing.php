@@ -11,7 +11,12 @@ function listing($array) { //array[tag, property, content]
     $ul = [];
     $length = count($array);
     for ($v = 0; $v < $length; $v++) {
-        $ul[] = "<li><{$array[$v]['tag']} id='a{$v}' {$array[$v]['property']}}>{$array[$v]['content']}</{$array[$v]['tag']}></li>";
+        $ul[] = "
+            <li>
+                <{$array[$v]['tag']} id='a{$v}' {$array[$v]['property']}>
+                    {$array[$v]['content']}
+                </{$array[$v]['tag']}>
+            </li>";
     }
-    return "<ul id='listing'>" . implode('', $ul) . "</ul>";
+    return "<ul id='listing'>" . implode(' ', $ul) . "</ul>";
 }
