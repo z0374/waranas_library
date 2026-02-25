@@ -1,31 +1,70 @@
-/**
- * Waranas Library - Iframesheet Engine (Lazy Load Version)
- */
 
-const iframesheet = {}; // Cache de URLs convertidas em Blobs
 
-/**
- * Inicializa o observador para carregar o conteúdo apenas quando necessário.
- */
-function initIframesheet(placeholderId, ref, url, type, customClass = '') {
+const iframesheet = {
+    refs: {},
+    loadQueue: 0,
+    delayPerRequest: 800 // 800ms entre cada requisição para ser gradual
+};
+
+function initIframesheet(placeholderId, ref, url, type, customClass = '', internalData = null) {
     const container = document.getElementById(placeholderId);
     if (!container) return;
 
-    // Configura o Intersection Observer
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(async (entry) => {
-            // Se o elemento estiver visível (ou quase visível)
+        entries.forEach(entry => {
             if (entry.isIntersecting) {
-                observer.unobserve(container); // Para de observar após disparar
-                await loadIframeContent(container, ref, url, type, customClass);
+                observer.unobserve(container);
+                
+                // Se o dado veio do servidor, carrega instantâneo
+                if (internalData !== null) {
+                    renderIframe(container, ref, url, type, customClass, internalData);
+                } else {
+                    // Se falhou no servidor (timeout), entra na fila gradual
+                    const currentDelay = iframesheet.loadQueue * iframesheet.delayPerRequest;
+                    iframesheet.loadQueue++;
+
+                    setTimeout(() => {
+                        fetchAndRender(container, ref, url, type, customClass);
+                    }, currentDelay);
+                }
             }
         });
-    }, {
-        rootMargin: '200px', // Carrega 200px antes de entrar no viewport
-        threshold: 0.01
-    });
+    }, { rootMargin: '100px' });
 
     observer.observe(container);
+}
+
+async function fetchAndRender(container, ref, url, type, customClass) {
+    try {
+        const response = await fetch(url);
+        const html = await response.text();
+        renderIframe(container, ref, url, type, customClass, html);
+    } catch (e) {
+        console.error("Erro no Lazy Load gradual:", e);
+        // Fallback direto para a URL original
+        renderIframe(container, ref, url, type, customClass, null, true);
+    }
+}
+
+function renderIframe(container, ref, url, type, customClass, html, isFallback = false) {
+    const el = document.createElement(type);
+    
+    if (isFallback) {
+        el.src = url;
+    } else {
+        const baseUrl = url.startsWith('http') ? url : window.location.origin + url;
+        const finalHtml = html.replace('<head>', `<head><base href="${baseUrl}">`);
+        const blob = new Blob([finalHtml], { type: 'text/html' });
+        el.src = URL.createObjectURL(blob);
+    }
+
+    el.className = customClass;
+    el.style.width = "100%";
+    el.style.height = "100%";
+    el.style.border = "none";
+    
+    container.innerHTML = '';
+    container.appendChild(el);
 }
 
 /**
