@@ -53,6 +53,9 @@ $media_2xl_landscape = [];
 $script = [];
 
 $iframesheet = []; // Armazena [ 'url' => 'id_gerado' ]
+$SITE_ENTRY_POINT = "";
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+    define("LOCAL_URI", $protocol . "://" . $_SERVER['HTTP_HOST']);
 // Arrays para rastrear os arquivos externos necessários
 $css_files = [];
 $script_files = [];
