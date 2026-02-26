@@ -1,6 +1,6 @@
 <?php
 /**
- * Regista o placeholder e prepara o transporte para a memória RAM.
+ * Regista o placeholder e prepara o transporte para a memória RAM com suporte a Cache Incremental.
  * @param string $id    ID único do elemento.
  * @param string $url   URL do recurso.
  * @param string $type  Tipo ('iframe' ou 'embed').
@@ -27,11 +27,14 @@ function setIframesheet($id, $url, $type = 'iframe', $class = '') {
     // Registro de Assets (Garante que o JS/CSS da lib sejam carregados)
     $component_script = ROOT_PATH_WARANAS_LIB . '/public/assets/js/components/iframesheet.js';
     if (!in_array($component_script, $script_files)) $script_files[] = $component_script;
-    $css_files[] = ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/iframeSheet.css";
+    if (!in_array(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/iframeSheet.css", $css_files)) {
+        $css_files[] = ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/iframeSheet.css";
+    }
 
     // Detecta se a URL é interna (começa com /)
     $isRelative = !preg_match("~^(?:f|ht)tps?://~i", $url);
-    $absoluteUrlForJs = $isRelative ? LOCAL_URI . '/' . ltrim($url, '/') : $url;
+    // LOCAL_URI deve estar definida em seu globals ou env
+    $absoluteUrlForJs = $isRelative ? (defined('LOCAL_URI') ? LOCAL_URI : '') . '/' . ltrim($url, '/') : $url;
 
     if ($isRelative && $current_depth < 3) {
         $now = microtime(true);
@@ -62,15 +65,16 @@ function setIframesheet($id, $url, $type = 'iframe', $class = '') {
                 parse_str(parse_url($url, PHP_URL_QUERY) ?? '', $new_get);
                 $_GET = array_merge($_GET, $new_get);
                 
-                // --- SUA LINHA DE ENTRY POINT ---
-                $entryPoint = (isset($SITE_ENTRY_POINT) && $SITE_ENTRY_POINT != "") ? $SITE_ENTRY_POINT : $_SERVER['DOCUMENT_ROOT'] . '/index.php';
-                // ---------------------------------
+                // --- ENTRY POINT ---
+                $entryPoint = (isset($SITE_ENTRY_POINT) && $SITE_ENTRY_POINT != "") ? $SITE_ENTRY_POINT : ROOT_PATH_WARANAS_LIB . '/index.php';
+                // -------------------
 
                 if (file_exists($entryPoint)) {
                     ob_start();
                     $GLOBALS['WARANAS_INTERNAL_REQ'] = true;
+                    $GLOBALS['WARANAS_LEVEL'] = $current_depth;
                     
-                    // Se for nível C, tentamos limitar o tempo de execução
+                    // Se for nível C, limitamos o tempo de execução para evitar travamentos
                     if ($current_depth === 2) @set_time_limit(2); 
 
                     include $entryPoint;
@@ -78,6 +82,14 @@ function setIframesheet($id, $url, $type = 'iframe', $class = '') {
                     $html = ob_get_clean();
                     $internal_cache[$url] = json_encode($html);
                     $internalContent = $internal_cache[$url];
+
+                    // --- LÓGICA DE CACHE INCREMENTAL ---
+                    // Se processamos um conteúdo que no cache atual está como 'null', sinalizamos para atualizar o arquivo físico
+                    if (isset($GLOBALS['EXISTING_CACHE_DATA']) && 
+                        (!isset($GLOBALS['EXISTING_CACHE_DATA'][$id]) || $GLOBALS['EXISTING_CACHE_DATA'][$id] === 'null')) {
+                        $GLOBALS['CACHE_NEEDS_UPDATE'] = true;
+                    }
+                    // -----------------------------------
                 }
                 
                 $_SERVER['REQUEST_URI'] = $originalUri;
@@ -87,7 +99,7 @@ function setIframesheet($id, $url, $type = 'iframe', $class = '') {
         }
     }
 
-    // Passa os dados para o JavaScript
+    // Passa os dados para o JavaScript (initIframesheet lidará com o internalContent ser null ou HTML)
     $script[] = "initIframesheet('{$id}', '{$ref}', '{$absoluteUrlForJs}', '{$type}', '{$class}', {$internalContent});";
     return "<div id='{$id}' class='iframesheet-placeholder {$class}'></div>";
 }
