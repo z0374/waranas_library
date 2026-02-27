@@ -3,6 +3,26 @@ const iframesheet = {
     delayPerRequest: 800 // 800ms entre cada fetch para evitar sobrecarga (Staggered Load)
 };
 
+const BlobCache = {
+    storage: {},
+    get: function(url, html) {
+        if (!this.storage[url]) {
+            // Gera a baseTag apenas uma vez por URL
+            const urlObj = new URL(url, window.location.origin);
+            const baseUrl = urlObj.origin + urlObj.pathname;
+            const baseTag = `<base href="${baseUrl}">`;
+            
+            const finalHtml = html.includes('<head>') 
+                ? html.replace('<head>', `<head>${baseTag}`) 
+                : baseTag + html;
+
+            const blob = new Blob([finalHtml], { type: 'text/html' });
+            this.storage[url] = URL.createObjectURL(blob);
+        }
+        return this.storage[url];
+    }
+};
+
 function initIframesheet(placeholderId, ref, url, type, customClass = '', internalData = null) {
     const container = document.getElementById(placeholderId);
     if (!container) return;
@@ -48,22 +68,12 @@ function renderIframe(container, url, type, customClass, html, isFallback = fals
     if (isFallback) {
         el.src = url;
     } else {
-        const urlObj = new URL(url, window.location.origin);
-        const baseUrl = urlObj.origin + urlObj.pathname;
-        
-        // Injeta a base para que CSS e imagens relativos funcionem dentro do Blob
-        const baseTag = `<base href="${baseUrl}">`;
-        const finalHtml = html.includes('<head>') 
-            ? html.replace('<head>', `<head>${baseTag}`) 
-            : baseTag + html;
-
-        const blob = new Blob([finalHtml], { type: 'text/html' });
-        el.src = URL.createObjectURL(blob);
+        // Agora o renderIframe apenas solicita a URL do Singleton
+        el.src = BlobCache.get(url, html);
     }
 
     el.className = customClass;
     el.style.cssText = "width:100%; height:100%; border:none;";
-    
     container.innerHTML = '';
     container.appendChild(el);
 }
