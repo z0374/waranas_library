@@ -26,16 +26,16 @@ function tagList($id, $array, $tm, $element = 'default') {
     $media_tablet_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/tabletL/tagList.css");
     
     for ($i = 0; $i < $length; $i++) {
-        $source = $array[$i]['media']; 
+        $source = $array[$i]['media'];
         $text = $array[$i]['text'];    
-        
+        $url = $array[$i]['url'];
         $innerContent = '';
         $anchorAttributes = "class='tag-link'";
 
         // 3. Lógica de seleção do Elemento com Integração Iframesheet
         switch ($element) {
             case 'image':
-                $innerContent = "<img src='{$source}' alt='{$text}' {$anchorAttributes} style='width:100%; height:100%; object-fit:cover;'>";
+                $innerContent = "<a href='{$url}' style='width:24%; height:100%; object-fit:cover;'><img src='{$source}' alt='{$text}' {$anchorAttributes} ></a>";
                 break;
 
             case 'video':

@@ -11,6 +11,7 @@
     margin: 1.5% 0;
     border-top: solid 0.12vh black;
     padding: calc((var(--tagList-tm) * 1vw) / 6) 0.18%;
+     gap: 3%;
     overflow: hidden;
 }
 
