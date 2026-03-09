@@ -35,11 +35,11 @@ function tagList($id, $array, $tm, $element = 'default') {
         // 3. Lógica de seleção do Elemento com Integração Iframesheet
         switch ($element) {
             case 'image':
-                $innerContent = "<a href='{$url}' {$anchorAttributes} style='width:24%; height:100%; object-fit:cover;'><img src='{$source}' alt='{$text}' ></a>";
+                $innerContent = "<a href='{$url}' {$anchorAttributes} ><img src='{$source}' alt='{$text}' style='width:100%; height:100%; object-fit:cover;'></a>";
                 break;
 
             case 'video':
-                $innerContent = "<video src='{$source}' {$anchorAttributes} autoplay muted loop playsinline style='width:100%; height:100%; object-fit:cover;'></video>";
+                $innerContent = "<video src='{$source}' {$anchorAttributes} autoplay muted loop playsinline ></video>";
                 break;
 
             case 'audio':
