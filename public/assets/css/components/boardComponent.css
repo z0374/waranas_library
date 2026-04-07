@@ -1,0 +1,17 @@
+.board-grid {
+    width: var(--chat-size, 100%);
+    
+    aspect-ratio: var(--chat-ratio, 1 / 1);
+    
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: min-content;
+    gap: 15px;
+    
+    background-color: #f4f4f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}

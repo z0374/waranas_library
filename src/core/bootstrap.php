@@ -15,9 +15,12 @@ require_once ROOT_PATH_WARANAS_LIB . '/src/core/security.php';
 require_once ROOT_PATH_WARANAS_LIB . '/src/core/database.php';
 require_once ROOT_PATH_WARANAS_LIB . '/src/core/env.php';
 require_once ROOT_PATH_WARANAS_LIB . '/src/core/internalContent.php';
-require_once ROOT_PATH_WARANAS_LIB . '/src/core/request.php';
 require_once ROOT_PATH_WARANAS_LIB . '/src/core/security.php';
 
+// 4. Carrega as funções de API.
+
+require_once ROOT_PATH_WARANAS_LIB . '/src/api/request.php';
+require_once ROOT_PATH_WARANAS_LIB . '/src/api/submit.php'; 
 // 4. Carrega todas as funções de ajuda (helpers)
 foreach (glob(ROOT_PATH_WARANAS_LIB . '/src/helpers/*.php') as $filename) {
     require_once $filename;

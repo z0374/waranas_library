@@ -33,7 +33,8 @@ logs($origin,"testItems");
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HEADER => true,
         CURLOPT_HTTPHEADER => $headers,
-        CURLOPT_TIMEOUT => 20
+        CURLOPT_TIMEOUT => 20,
+        CURLOPT_CUSTOMREQUEST => 'GET'
     ]);
 
     $response = curl_exec($ch);
