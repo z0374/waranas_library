@@ -43,14 +43,12 @@ logs($origin,"testItems");
     if ($response === false) {
         // Erro de cURL (ex: timeout, conexão)
         $error = curl_error($ch);
-        curl_close($ch);
         return [];
     }
     
     $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
     $headersRaw = substr($response, 0, $headerSize);
     $body = substr($response, $headerSize);
-    curl_close($ch);
 
     // -----------------------------------------------------
     // 1. Lógica de Salvamento de Imagem (Conteúdo Binário)

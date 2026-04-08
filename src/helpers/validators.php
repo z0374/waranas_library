@@ -30,7 +30,6 @@ function isSvg($filePath) {
     // Nota: SVGs as vezes são detectados como 'text/plain' ou 'text/xml' dependendo do servidor
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $mimeType = finfo_file($finfo, $filePath);
-    finfo_close($finfo);
 
     $allowedMimes = ['image/svg+xml', 'text/plain', 'text/xml', 'application/xml'];
     
