@@ -1,0 +1,59 @@
+/* Base do Balão */
+.chat-bubble {
+    max-width: 80%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 15px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    font-family: inherit;
+    /* Animação suave ao aparecer na tela */
+    animation: fadeIn 0.3s ease-out;
+}
+
+.chat-bubble .bubble-text {
+    display: inline-block;
+}
+
+/* * Modelos de Remetentes 
+ * (O alinhamento funciona em conjunto com o display: grid do seu boardComponent)
+ */
+
+/* Mensagem do Usuário (Azul, alinhado à direita) */
+.chat-bubble.user {
+    background-color: #007bff;
+    color: #ffffff;
+    /* Empurra o balão para a direita */
+    justify-self: end; 
+    border-bottom-right-radius: 4px;
+}
+
+/* Mensagem do Sistema / Retorno (Cinza, alinhado à esquerda) */
+.chat-bubble.system {
+    background-color: #e9ecef;
+    color: #333333;
+    /* Empurra o balão para a esquerda */
+    justify-self: start;
+    border-bottom-left-radius: 4px;
+}
+
+/* Mensagem de Erro (Vermelho, alinhado à esquerda) */
+.chat-bubble.error {
+    background-color: #ffe6e6;
+    color: #cc0000;
+    border: 1px solid #ffcccc;
+    justify-self: start;
+    border-bottom-left-radius: 4px;
+}
+
+/* Keyframe para a animação de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -8,7 +8,7 @@
  * @param string $content  O conteúdo padrão (HTML ou texto) a ser carregado via JS.
  * @return string          O HTML renderizado do componente.
  */
-function boardComponent($size = '100%', $ratio = '1/1', $content = '') {
+function boardComponent($size = '100%', $ratio = '1/2', $content = '') {
     
     // Importa as arrays globais do seu sistema 
     global $styleVar, $css_files, $script_files, $scrypt;

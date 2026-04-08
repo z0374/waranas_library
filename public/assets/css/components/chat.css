@@ -1,0 +1,54 @@
+/* Contentor Global do Widget */
+.chat-widget-container {
+    width: var(--chat-widget-size, 100%);
+    max-width: 100%;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    overflow: hidden; /* Mantém os cantos arredondados limpos */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    font-family: inherit;
+}
+
+/* Cabeçalho do Chat */
+.chat-widget-header {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 15px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 1px solid #0056b3;
+}
+
+/* Corpo do Chat (Onde fica o boardComponent) */
+.chat-widget-body {
+    flex: 1;
+    background-color: #f4f4f9;
+}
+
+/* Rodapé do Chat (Onde fica o chatInputComponent) */
+.chat-widget-footer {
+    background-color: #ffffff;
+    border-top: 1px solid #ddd;
+}
+
+/* * Ajustes de sobreposição de CSS (Overrides):
+ * Como os subcomponentes (board e input) têm as suas próprias bordas e fundos,
+ * limpamos essas propriedades quando eles estão dentro do chat-widget-container
+ * para que não haja bordas duplas ou aspeto de "caixa dentro de caixa".
+ */
+.chat-widget-container .board-grid {
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+.chat-widget-container .chat-input-area {
+    border: none;
+    border-radius: 0;
+    padding: 15px; /* Mais espaço para respirar no rodapé */
+}
