@@ -9,9 +9,9 @@
  * @param string $buttonText  O texto do botão de envio.
  * @return string             O HTML e JS renderizados do componente.
  */
-function chatInputComponent($action, $actionType = 'function', $placeholder = 'Digite a sua mensagem...', $buttonText = 'Enviar') {
+function inputSubmit($action, $actionType = 'function', $placeholder = 'Digite a sua mensagem...', $buttonText = 'Enviar') {
     
-    global $css_files, $scrypt;
+    global $css_files, $script;
 
     // Tratamento de segurança (XSS)
     $safeAction      = htmlspecialchars($action, ENT_QUOTES, 'UTF-8');
@@ -31,7 +31,7 @@ function chatInputComponent($action, $actionType = 'function', $placeholder = 'D
     }
 
     // Lógica JavaScript injetada para lidar com o evento 'submit' do formulário
-    $scrypt[] = sprintf("
+    $script[] = sprintf("
         document.addEventListener('DOMContentLoaded', function() {
             const formElement = document.getElementById('%s');
             const inputField  = document.getElementById('%s');

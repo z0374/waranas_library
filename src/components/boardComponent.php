@@ -42,7 +42,7 @@ function boardComponent($size = '100%', $ratio = '1/2', $content = '') {
     ', $safeContentJs);
 
     // Formata a string de estilos CSS inline de forma limpa e segura
-    $styleVar = sprintf('
+    $styleVar[] = sprintf('
         --chat-size: %s;
         --chat-ratio: %s;', 
             $safeSize, $safeRatio);

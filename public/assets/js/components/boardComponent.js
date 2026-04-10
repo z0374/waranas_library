@@ -1,4 +1,4 @@
-const quadroChat = document.getElementById('quadro-chat');
+const quadroChat = document.getElementById('boardComponent');
 
     /**
      * Função para atualizar o quadro com novos dados (mensagens)

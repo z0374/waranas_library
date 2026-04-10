@@ -7,7 +7,7 @@
  * @param string $sender O remetente da mensagem (ex: 'user', 'system', 'error'). Define o estilo e alinhamento.
  * @return string        O HTML renderizado do balão.
  */
-function Bubble($text = '', $sender = 'system') {
+function bubble($text = '', $sender = 'system') {
     
     // Importa as arrays globais de dependências do sistema
     global $css_files;

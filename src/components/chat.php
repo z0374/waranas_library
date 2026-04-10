@@ -13,17 +13,16 @@
  */
 function chatComponent(
     $title = 'Assistente Virtual', 
-    $action = 'processarNovaMensagem', 
-    $actionType = 'function', 
     $initialMessages = [], 
     $size = '400px', 
     $ratio = '9/16'
 ) {
-    global $css_files;
+    global $css_files, $styleVar, $script_files;
 
     // Tratamento de segurança para o título
     $safeTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
     $safeSize  = htmlspecialchars($size, ENT_QUOTES, 'UTF-8');
+    $safeRatio  = htmlspecialchars($ratio, ENT_QUOTES, 'UTF-8');
 
     // 1. Processar as mensagens iniciais usando o chatBubbleComponent (ou Bubble)
     $boardContent = '';
@@ -35,7 +34,7 @@ function chatComponent(
             if (!empty($text)) {
                 // Presumo que a função se chame chatBubbleComponent de acordo com a nossa criação anterior
                 // Se a renomeou estritamente para Bubble(), altere a linha abaixo para Bubble($text, $sender)
-                $boardContent .= chatBubbleComponent($text, $sender); 
+                $boardContent .= bubble($text, $sender); 
             }
         }
     }
@@ -44,17 +43,27 @@ function chatComponent(
     $boardHtml = boardComponent('100%', $ratio, $boardContent);
 
     // 3. Gerar a Barra de Input
-    $inputHtml = chatInputComponent($action, $actionType, 'Escreva a sua mensagem...', 'Enviar');
+    $inputHtml = inputSubmit('sendMSG', 'function', 'Escreva a sua mensagem...', 'Enviar');
 
     // 4. Adicionar o CSS específico do contentor global do Chat
-    $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/chatComponent.css';
+    $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/chat.css';
     if (!in_array($component_css, $css_files)) {
         $css_files[] = $component_css;
     }
 
+    $styleVar[] = sprintf( '
+        --chat-widget-size: %s;
+        --chat-widget-ratio: %s;
+        ', $safeSize, $safeRatio );
+
+    $component_script = ROOT_PATH_WARANAS_LIB . '/public/assets/js/components/chat.js';
+    if (!in_array($component_script, $script_files)) {
+        $script_files[] = $component_script;
+    }
+
     // 5. Estrutura HTML final (Wrapper)
     $chatWidget = sprintf('
-        <div class="chat-widget-container" style="--chat-widget-size: %s;">
+        <div class="chat-widget-container" >
             <div class="chat-widget-header">%s</div>
             
             <div class="chat-widget-body">
@@ -65,7 +74,7 @@ function chatComponent(
                 %s
             </div>
         </div>
-    ', $safeSize, $safeTitle, $boardHtml, $inputHtml);
+    ', $safeTitle, $boardHtml, $inputHtml);
 
     return $chatWidget;
 }
