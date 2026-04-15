@@ -1,32 +1,50 @@
 <?php
 function tabs($array, $bg) {
-    global $style, $media_mobile_portrait_geral, $media_desktop_landscape_geral;
+    global $styleVar, $style, $media_mobile_portrait_geral, $media_desktop_landscape_geral;
+
     $tabs = [];
     $content = [];
     $check = [];
-    $indicatorRules = []; // Regras para a camada que se move
     
     $length = count($array);
 
     if(empty($array) || $length == 0) { 
-        $tabs[] = "<label for='tabXXX'></label>";
-        $content[] = "<input class='tabsBt' name='tabs' type='radio' id='tabXXX' checked><div class='content' id='cntXXX'><p></p></div>";
+        $tabs[] = "<label for='tabXXX'>Tab</label>";
+        $content[] = "<input class='tabsBt' name='tabs' type='radio' id='tabXXX' checked>
+                      <div class='content' id='cntXXX'><p>Conteúdo</p></div>";
         $check[] = "input#tabXXX:checked ~ #cntXXX";
     }
     else {
         for ($i = 0; $i < $length; $i++) {
+
+            // LABEL
             $tabs[] = "<label for='tab{$i}'>{$array[$i]['title']}</label>";
-            $content[] = "<input class='tabsBt' name='tabs' type='radio' id='tab{$i}' " . ($i == 0 ? 'checked' : '') . "><div class='content' id='cnt{$i}'>{$array[$i]['content']}</div>";
-            
+
+            // INPUT + CONTEÚDO
+            $content[] = "
+                <input class='tabsBt' name='tabs' type='radio' id='tab{$i}' " . ($i == 0 ? 'checked' : '') . ">
+                <div class='content' id='cnt{$i}'>
+                    {$array[$i]['content']}
+                </div>
+            ";
+
+            // CONTROLE DE EXIBIÇÃO
             $check[] = "input#tab{$i}:checked ~ #cnt{$i}";
 
-            // Regra: Se o input X estiver checado, mude a opacidade do label X e mova o indicador
-            $pos = (100 / $length) * $i;
-            $style[] = ".tabs:has(#tab{$i}:checked) .labelsTab label[for='tab{$i}'] { opacity: 1; }";
-            $style[] = ".tabs:has(#tab{$i}:checked) .tab-indicator { left: {$pos}%; }";
+            $style[] = ".tabs:has(#tab{$i}:checked) .labelsTab label[for='tab{$i}'] {
+                opacity: 0.3;
+                font-weight: 600;
+                transform: scale(1.05);
+            }";
         }
     }
+    $ArrLen = 100 / max(1, $length) . "%";
+    $styleVar[] = sprintf("
+        --ArrLen:%s;
+    ", $ArrLen);
 
+     $style[] = file_get_contents( ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/tabs.css" );
+     /*
     $style[] = "
         .tabs {
             width:100%;
@@ -52,12 +70,11 @@ function tabs($array, $bg) {
             transition: opacity 0.3s; z-index: 2; 
         }
         
-        /* A segunda camada (Indicador sobreposto) */
         .tab-indicator {
             position: absolute;
             top: 0; bottom: 0;
             width: " . (100 / max(1, $length)) . "%;
-            background-color: #69696942; /* Cor da camada sobreposta */
+            background-color: #69696942; 
             transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1;
             pointer-events: none;
@@ -71,10 +88,11 @@ function tabs($array, $bg) {
                     border:solid 1px {$bg};
                     text-align:justify;
                 }
-        " . implode(', ', $check) . "{
+    */
+
+    $style[] = implode(', ', $check) . "{
                 display:block; 
-            }
-    ";
+            }";
     
     $media_mobile_portrait_geral[] = ".tabs .content{font-size:1rem;}";
 
@@ -84,7 +102,6 @@ function tabs($array, $bg) {
     <div class='tabs'>
         <div class='labelsTab'>
             " . implode('', $tabs) . "
-            <div class='tab-indicator'></div>
         </div>
         " . implode('', $content) . "
     </div>";
