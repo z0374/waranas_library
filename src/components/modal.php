@@ -49,5 +49,5 @@ function modal($id, $array, $color) {
     $mdl[] = "<label class='closeModal' for='modal-toggle{$distinctId}'></label><div class='cmdl' onclick='event.stopPropagation()'>{$imdl}</div>";
     $body[] = "<input type='checkbox' id='modal-toggle{$distinctId}' class='modal-toggle' /><div id='{$distinctId}Mdl' class='mdl {$lowerId}'>" . implode('', $mdl) . "</div>";
 
-    return '<label id="' . $lowerId . '" for="modal-toggle' . $distinctId . '" class="openModal">' . $id . '</label>';
+    return '<label id="' . $lowerId . 'Labels" for="modal-toggle' . $distinctId . '" class="openModal' . $lowerId . 'Labels">' . $id . '</label>';
 }
