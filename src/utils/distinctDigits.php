@@ -14,6 +14,3 @@ function distinctDigits(): string {
     // Retorna os 6 primeiros elementos unidos
     return $digitos[0] . $digitos[1] . $digitos[2] . $digitos[3] . $digitos[4] . $digitos[5];
 }
-
-// Exemplo de uso:
-echo gerarCodigoUnicoRapido();

@@ -14,6 +14,8 @@ function modal($id, $array, $color) {
     }
     $bt = $length - 1;
 
+    $lowerId = mb_strtolower($id, 'UTF-8');
+    $distinctId = $lowerId . distinctDigits();
     // Estilos dinâmicos
     $style[] = "
         #modal-toggle{$distinctId}:checked + #{$distinctId}Mdl{visibility:visible;opacity:1;}
@@ -24,8 +26,6 @@ function modal($id, $array, $color) {
 
     $linha = '';
 
-    $lowerId = mb_strtolower($id, 'UTF-8');
-    $distinctId = $lowerId . distinctDigits();
 
     if (is_array($array)) {
         for ($v = 0; $v < $length - 1; $v++) {
@@ -49,5 +49,5 @@ function modal($id, $array, $color) {
     $mdl[] = "<label class='closeModal' for='modal-toggle{$distinctId}'></label><div class='cmdl' onclick='event.stopPropagation()'>{$imdl}</div>";
     $body[] = "<input type='checkbox' id='modal-toggle{$distinctId}' class='modal-toggle' /><div id='{$distinctId}Mdl' class='mdl {$lowerId}'>" . implode('', $mdl) . "</div>";
 
-    return '<label id="' . $lowerId . 'Labels" for="modal-toggle' . $distinctId . '" class="openModal' . $lowerId . 'Labels">' . $id . '</label>';
+    return '<label id="' . $lowerId . 'Label" for="modal-toggle' . $distinctId . '" class="openModal ' . $lowerId . 'Label">' . $id . '</label>';
 }
