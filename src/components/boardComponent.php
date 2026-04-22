@@ -18,13 +18,13 @@ function boardComponent($size = '100%', $ratio = '1/2', $content = '') {
     $safeRatio = htmlspecialchars($ratio, ENT_QUOTES, 'UTF-8');
 
     // Adiciona o CSS
-    $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/boardComponent.css';
+    $component_css = ROOT_PATH_WARANAS_LIB . '/assets/css/components/boardComponent.css';
     if (!in_array($component_css, $css_files)) {
         $css_files[] = $component_css;
     }
 
     // Adiciona o JS
-    $component_script = ROOT_PATH_WARANAS_LIB . '/public/assets/js/components/boardComponent.js';
+    $component_script = ROOT_PATH_WARANAS_LIB . '/assets/js/components/boardComponent.js';
     if (!in_array($component_script, $script_files)) {
         $script_files[] = $component_script;
     }

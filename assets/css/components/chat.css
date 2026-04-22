@@ -63,3 +63,17 @@
     border-radius: 0;
     padding: 15px; /* Mais espaço para respirar no rodapé */
 }
+
+.chat-message-row {
+    display: flex;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.chat-align-left {
+    justify-content: flex-start;
+}
+
+.chat-align-right {
+    justify-content: flex-end;
+}

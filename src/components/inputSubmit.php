@@ -25,7 +25,7 @@ function inputSubmit($action, $actionType = 'function', $placeholder = 'Digite a
     $inputId  = $uniqueId . '_input';
 
     // Adiciona o CSS
-    $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/chatInputComponent.css';
+    $component_css = ROOT_PATH_WARANAS_LIB . '/assets/css/components/chatInputComponent.css';
     if (!in_array($component_css, $css_files)) {
         $css_files[] = $component_css;
     }

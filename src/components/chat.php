@@ -2,52 +2,60 @@
 
 /**
  * Renderiza o widget de chat completo, integrando o quadro, os balões e a barra de input.
- *
- * @param string $title           O título que aparece no cabeçalho do chat.
- * @param string $action          A ação a executar ('function' JS ou 'endpoint' URL).
- * @param string $actionType      O tipo de ação ('function' ou 'endpoint').
- * @param array  $initialMessages Array associativo com as mensagens iniciais [['text' => '...', 'sender' => 'system']].
- * @param string $size            O tamanho (largura) do widget inteiro (ex: '400px', '100%').
- * @param string $ratio           A proporção do quadro de mensagens (ex: '9/16' para formato telemóvel).
- * @return string                 O HTML completo do widget de chat.
  */
-function chatComponent(
-    $title = 'Assistente Virtual', 
-    $initialMessages = [], 
-    $size = '400px', 
-    $ratio = '9/16'
-) {
+function chatComponent($config = []) {
     global $css_files, $styleVar, $script_files;
 
-    // Tratamento de segurança para o título
+    // 1. Define os padrões e mescla com o que foi recebido
+    $defaults = [
+        'title' => 'Assistente Virtual',
+        'initialMessages' => [],
+        'size' => '400px',
+        'ratio' => '9/16'
+    ];
+
+    $config = array_merge($defaults, $config);
+
+    $title           = $config['title'];
+    $initialMessages = $config['initialMessages'];
+    $size            = $config['size'];
+    $ratio           = $config['ratio'];
+
+    // Tratamento de segurança
     $safeTitle = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
     $safeSize  = htmlspecialchars($size, ENT_QUOTES, 'UTF-8');
-    $safeRatio  = htmlspecialchars($ratio, ENT_QUOTES, 'UTF-8');
+    $safeRatio = htmlspecialchars($ratio, ENT_QUOTES, 'UTF-8');
 
-    // 1. Processar as mensagens iniciais usando o chatBubbleComponent (ou Bubble)
+    // 1. Processar as mensagens iniciais com lógica de posicionamento
     $boardContent = '';
     if (!empty($initialMessages) && is_array($initialMessages)) {
         foreach ($initialMessages as $msg) {
-            $text   = isset($msg['text']) ? $msg['text'] : '';
-            $sender = isset($msg['sender']) ? $msg['sender'] : 'system';
+            $text   = $msg['text'] ?? '';
+            $sender = $msg['sender'] ?? 'system';
             
             if (!empty($text)) {
-                // Presumo que a função se chame chatBubbleComponent de acordo com a nossa criação anterior
-                // Se a renomeou estritamente para Bubble(), altere a linha abaixo para Bubble($text, $sender)
-                $boardContent .= bubble($text, $sender); 
+                // Define o alinhamento: 'user' à direita, outros à esquerda
+                $alignmentClass = ($sender === 'user') ? 'chat-align-right' : 'chat-align-left';
+                
+                // O quadro envolve a bolha para determinar o lado
+                $boardContent .= sprintf(
+                    '<div class="chat-message-row %s">%s</div>',
+                    $alignmentClass,
+                    bubble($text, $sender)
+                );
             }
         }
     }
 
-    // 2. Gerar o Quadro de Mensagens (O tamanho aqui é 100% porque o limite será dado pelo contentor pai)
-    $boardHtml = boardComponent('100%', $ratio, $boardContent);
+    // 2. Gerar o Quadro de Mensagens
+    $boardHtml = boardComponent('100%', $safeRatio, $boardContent);
 
     // 3. Gerar a Barra de Input
     $inputHtml = inputSubmit('sendMSG', 'function', 'Escreva a sua mensagem...', 'Enviar');
 
-    // 4. Adicionar o CSS específico do contentor global do Chat
-    $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/chat.css';
-    if (!in_array($component_css, $css_files)) {
+    // 4. Adicionar Assets
+    $component_css = ROOT_PATH_WARANAS_LIB . '/assets/css/components/chat.css';
+    if (isset($css_files) && !in_array($component_css, $css_files)) {
         $css_files[] = $component_css;
     }
 
@@ -56,27 +64,17 @@ function chatComponent(
         --chat-widget-ratio: %s;
         ', $safeSize, $safeRatio );
 
-    $component_script = ROOT_PATH_WARANAS_LIB . '/public/assets/js/components/chat.js';
-    if (!in_array($component_script, $script_files)) {
+    $component_script = ROOT_PATH_WARANAS_LIB . '/assets/js/components/chat.js';
+    if (isset($script_files) && !in_array($component_script, $script_files)) {
         $script_files[] = $component_script;
     }
 
-    // 5. Estrutura HTML final (Wrapper)
-    $chatWidget = sprintf('
-        <div class="chat-widget-container" >
+    // 5. Estrutura HTML final
+    return sprintf('
+        <div class="chat-widget-container" style="max-width: var(--chat-widget-size); width: 100%%;">
             <div class="chat-widget-header">%s</div>
-            
-            <div class="chat-widget-body">
-                %s
-            </div>
-            
-            <div class="chat-widget-footer">
-                %s
-            </div>
+            <div class="chat-widget-body">%s</div>
+            <div class="chat-widget-footer">%s</div>
         </div>
     ', $safeTitle, $boardHtml, $inputHtml);
-
-    return $chatWidget;
 }
-
-?>

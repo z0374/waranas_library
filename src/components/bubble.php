@@ -19,7 +19,7 @@ function bubble($text = '', $sender = 'system') {
     $safeSender = strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', $sender));
 
     // Adiciona o CSS do componente, se ainda não estiver na lista
-    $component_css = ROOT_PATH_WARANAS_LIB . '/public/assets/css/components/bubble.css';
+    $component_css = ROOT_PATH_WARANAS_LIB . '/assets/css/components/bubble.css';
     if (!in_array($component_css, $css_files)) {
         $css_files[] = $component_css;
     }
