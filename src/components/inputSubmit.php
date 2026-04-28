@@ -32,47 +32,35 @@ function inputSubmit($action, $actionType = 'function', $placeholder = 'Digite a
 
     // Lógica JavaScript injetada para lidar com o evento 'submit' do formulário
     $script[] = sprintf("
-        document.addEventListener('DOMContentLoaded', function() {
-            const formElement = document.getElementById('%s');
-            const inputField  = document.getElementById('%s');
+    document.addEventListener('DOMContentLoaded', function() {
+    const formElement = document.getElementById('%s');
+    const inputField  = document.getElementById('%s');
 
-            formElement.addEventListener('submit', function(e) {
-                // Impede que o formulário recarregue a página
-                e.preventDefault();
+    if (!formElement || !inputField) return;
 
-                const textValue = inputField.value.trim();
-                if (!textValue) return; // Ignora se o texto estiver vazio
+    formElement.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-                const action     = '%s';
-                const actionType = '%s';
+        const textValue = inputField.value.trim();
+        if (!textValue) return;
 
-                // Dispara uma função JS na página
-                if (actionType === 'function') {
-                    if (typeof window[action] === 'function') {
-                        window[action](textValue);
-                    } else {
-                        console.error('Waranas Lib: Função JS ' + action + ' não encontrada.');
-                    }
-                } 
-                // Dispara um POST para um Endpoint
-                else if (actionType === 'endpoint') {
-                    fetch(action, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ mensagem: textValue })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        const event = new CustomEvent('chatEndpointSuccess', { detail: data });
-                        document.dispatchEvent(event);
-                    })
-                    .catch(error => console.error('Waranas Lib Erro de Fetch:', error));
-                }
+        const action = '%s'; // Nome da função JS (ex: sendMSG) ou URL
 
-                // Limpa o campo de input após o envio
-                inputField.value = '';
-            });
-        });
+        /**
+         * Ação Primária: 
+         * Redireciona o fluxo para a função definida no parâmetro $action.
+         * Se action for 'sendMSG', chamará window['sendMSG'](textValue).
+         */
+        if (typeof window[action] === 'function') {
+            window[action](textValue);
+        } else {
+            console.warn('Waranas Lib: Action \"' + action + '\" não encontrada como função global.');
+        }
+
+        // Limpa apenas o campo de input
+        inputField.value = '';
+    });
+});
     ", $formId, $inputId, $safeAction, $safeActionType);
 
     // HTML do Componente agora com as tags <form> e <button type="submit">
