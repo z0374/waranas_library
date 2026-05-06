@@ -35,6 +35,7 @@ function tabs($array, $bg) {
                 opacity: 0.3;
                 font-weight: 600;
                 transform: scale(1.05);
+                text-decoration:underline;
             }";
         }
     }
