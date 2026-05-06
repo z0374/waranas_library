@@ -25,11 +25,11 @@ function setIframesheet($id, $url, $type = 'iframe', $class = '') {
     $internalContent = 'null';
 
     // Registro de Assets Críticos
-    $component_script = ROOT_PATH_WARANAS_LIB . '/public/assets/js/components/iframesheet.js';
+    $component_script = ROOT_PATH_WARANAS_LIB . '/assets/js/components/iframesheet.js';
     if (!in_array($component_script, $script_files)) $script_files[] = $component_script;
     
-    if (!in_array(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/iframeSheet.css", $css_files)) {
-        $css_files[] = ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/iframeSheet.css";
+    if (!in_array(ROOT_PATH_WARANAS_LIB . "/assets/css/components/iframeSheet.css", $css_files)) {
+        $css_files[] = ROOT_PATH_WARANAS_LIB . "/assets/css/components/iframeSheet.css";
     }
 
     // Normalização da URL para o JavaScript

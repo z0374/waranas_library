@@ -26,7 +26,7 @@ function waranas_render_assets() {
         return "";
     }
 
-    $component_script = ROOT_PATH_WARANAS_LIB . '/public/assets/js/components/preloader.js';
+    $component_script = ROOT_PATH_WARANAS_LIB . '/assets/js/components/preloader.js';
 if (!in_array($component_script, $script_files)) {
     $script_files[] = $component_script;
 }

@@ -43,7 +43,7 @@ function tabs($array, $bg) {
         --ArrLen:%s;
     ", $ArrLen);
 
-     $style[] = file_get_contents( ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/tabs.css" );
+     $style[] = file_get_contents( ROOT_PATH_WARANAS_LIB . "/assets/css/components/tabs.css" );
      /*
     $style[] = "
         .tabs {
@@ -96,7 +96,7 @@ function tabs($array, $bg) {
     
     $media_mobile_portrait_geral[] = ".tabs .content{font-size:1rem;}";
 
-    $media_desktop_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/desktopL/tabs.css");
+    $media_desktop_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/assets/css/components/desktopL/tabs.css");
 
     return "
     <div class='tabs'>

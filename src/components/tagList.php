@@ -12,18 +12,18 @@ function tagList($id, $array, $tm, $element = 'default') {
     }
     
     // Garante que o script de gerenciamento de Blobs/Iframesheet seja carregado
-    $component_script = ROOT_PATH_WARANAS_LIB . '/public/assets/js/components/embedBlob.js';
+    $component_script = ROOT_PATH_WARANAS_LIB . '/assets/js/components/embedBlob.js';
     if (!in_array($component_script, $script_files)) {
         $script_files[] = $component_script;
     }
 
     // 2. Carregamento dos CSS (Conforme estrutura original)
-    $style[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/tagList.css");
-    $media_desktop_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/desktopL/tagList.css");
-    $media_mobile_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/mobileL/tagList.css");
-    $media_mobile_portrait_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/mobileP/tagList.css");
-    $media_tablet_portrait_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/tabletP/tagList.css");
-    $media_tablet_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/public/assets/css/components/tabletL/tagList.css");
+    $style[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/assets/css/components/tagList.css");
+    $media_desktop_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/assets/css/components/desktopL/tagList.css");
+    $media_mobile_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/assets/css/components/mobileL/tagList.css");
+    $media_mobile_portrait_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/assets/css/components/mobileP/tagList.css");
+    $media_tablet_portrait_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/assets/css/components/tabletP/tagList.css");
+    $media_tablet_landscape_geral[] = file_get_contents(ROOT_PATH_WARANAS_LIB . "/assets/css/components/tabletL/tagList.css");
     
     for ($i = 0; $i < $length; $i++) {
         $source = $array[$i]['media'];
