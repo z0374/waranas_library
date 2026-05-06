@@ -4,6 +4,7 @@
 }
 
 .tag-link{
-    width: 15cqw;
-    height: 15cqw;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
 }
